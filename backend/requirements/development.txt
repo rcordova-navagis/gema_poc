@@ -1,0 +1,11 @@
+# Django Development Packages
+# ---------------------------
+
+-r base.txt
+
+coverage==4.5.1
+django-debug-toolbar==1.9.1
+docutils==0.14
+model-mommy==1.5.1
+six==1.11.0
+sqlparse==0.2.4
