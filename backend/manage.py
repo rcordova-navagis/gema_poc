@@ -2,10 +2,18 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+from dotenv import load_dotenv
 
 
 def main():
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'geocore.settings.development')
+    load_dotenv(dotenv_path='./../.env')
+
+    DEBUG = bool(os.environ.get('DEBUG', True))
+
+    environment = 'development' if DEBUG is True else 'production'
+
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', "geocore.settings.{environment}".format(environment=environment))
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

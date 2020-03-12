@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  api:
+    restart: always
+    build: ./backend
+    command: python manage.py runserver 0.0.0.0:8080
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+    links:
+      - db
+
+  db:
+    image: mdillon/postgis:latest
+    restart: always
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+    networks:
+      - back-tier
+    ports:
+      - "5444:5444"
+    env_file:
+      - ./.env.db
+
+volumes:
+  db-data:
+
+networks:
+  back-tier:

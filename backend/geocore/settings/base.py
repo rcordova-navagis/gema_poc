@@ -13,7 +13,7 @@ LOG_DIR      = os.path.join(PROJECT_ROOT, 'logs')
 for directory in (LOG_DIR):
     sys.path.insert(0, directory)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(' ')
 
 ADMINS = (
     ('John Doe', 'John.Doe@example.com'),
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     # extensions
     'rest_framework'
 ]
@@ -59,18 +60,6 @@ LOGGING = {
     },
 }
 
-MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
-
-MEDIA_URL = '/media/'
-
-REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
-}
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -81,28 +70,17 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'geocore.urls'
-
-SECRET_KEY = os.environ.get('SECRET_KEY', 't_jf1qead_154$lr@nw0w^&qizwp33powqxjn*d-h0nfu^01$5') 
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 SITE_ID = 1
 
-STATIC_ROOT  = os.path.join(PROJECT_ROOT, 'static')
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
-
-STATIC_URL = '/static/'
-
-# STATICFILES_DIRS = [
-#     os.path.join(PROJECT_ROOT, 'static'),
-# ]
-#
-# STATICFILES_FINDERS = (
-#     'django.contrib.staticfiles.finders.FileSystemFinder',
-#     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#     'django.contrib.staticfiles.finders.DefaultStorageFinder',
-# )
+ROOT_URLCONF = 'geocore.urls'
 
 TEMPLATES = [
     {
@@ -122,13 +100,11 @@ TEMPLATES = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'i^%24_!l2g3kb#jv8#44wjk-+zm8$pe9^!n(_b#4h1vg!^rib='
+SECRET_KEY = os.environ.get('SECRET_KEY', 't_jf1qead_154$lr@nw0w^&qizwp33powqxjn*d-h0nfu^01$5')
 
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = os.environ.get('TZ', 'Asia/Manila')
 
 USE_I18N = True
 
@@ -137,3 +113,20 @@ USE_L10N = True
 USE_TZ = True
 
 WSGI_APPLICATION = 'geocore.wsgi.application'
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.0/howto/static-files/
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+STATIC_URL = '/static/'
+# STATICFILES_DIRS = [
+#     os.path.join(PROJECT_ROOT, 'static'),
+# ]
+#
+# STATICFILES_FINDERS = (
+#     'django.contrib.staticfiles.finders.FileSystemFinder',
+#     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+#     'django.contrib.staticfiles.finders.DefaultStorageFinder',
+# )
+
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
+MEDIA_URL = '/media/'

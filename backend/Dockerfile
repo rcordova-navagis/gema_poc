@@ -1,19 +1,27 @@
-# Use an official Python runtime as a parent image
-FROM python:3.6
+# pull official base image
+FROM python:3.8.0-alpine
 
-# Adding backend directory to make absolute filepaths consistent across services
-WORKDIR /var/www/geocore/backend
+# set work directory
+WORKDIR /app/api
 
-# Install Python dependencies
-COPY requirements/base.txt /var/www/geocore/backend
-RUN pip3 install --upgrade pip -r requirements.txt
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-# Add the rest of the code
-COPY . /var/www/geocore/backend
+# install psycopg2 dependencies
+RUN apk update \
+    && apk add postgresql-dev gcc python3-dev musl-dev
 
-# Make port 8000 available for the app
-EXPOSE 8080
+# install dependencies
+RUN pip install --upgrade pip
+COPY ./requirements/base.txt /app/api/requirements.txt
+RUN pip install -r requirements.txt
 
-# Be sure to use 0.0.0.0 for the host within the Docker container,
-# otherwise the browser won't be able to find it
-CMD python3 manage.py runserver 0.0.0.0:8080
+# copy entrypoint.sh
+COPY ./entrypoint.sh /app/api/entrypoint.sh
+
+# copy project
+COPY . /app/api
+
+# run entrypoint.sh
+ENTRYPOINT ["/app/api/entrypoint.sh"]
