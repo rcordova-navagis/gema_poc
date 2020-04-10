@@ -5,9 +5,11 @@ import { Provider } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
 import { hot, setConfig } from 'react-hot-loader';
+import {ApolloProvider} from '@apollo/react-hooks';
 import store from './common/store';
-import routeConfig from './common/routeConfig';
+import {getRoutes} from './common/routeConfig';
 import history from './common/history';
+import client from './common/apollo';
 
 setConfig({
   logLevel: 'debug',
@@ -19,14 +21,18 @@ function renderRouteConfigV3(routes, contextPath) {
 
   const renderRoute = (item, routeContextPath) => {
     let newContextPath;
+
     if (/^\//.test(item.path)) {
       newContextPath = item.path;
     } else {
       newContextPath = `${routeContextPath}/${item.path}`;
     }
+
     newContextPath = newContextPath.replace(/\/+/g, '/');
+
     if (item.component && item.childRoutes) {
       const childRoutes = renderRouteConfigV3(item.childRoutes, newContextPath);
+
       children.push(
         <Route
           key={newContextPath}
@@ -50,11 +56,16 @@ function renderRouteConfigV3(routes, contextPath) {
 }
 
 function Root() {
+  const routeConfig = getRoutes(store.getState());
+
   const children = renderRouteConfigV3(routeConfig, '/');
+
   return (
-    <Provider store={store}>
-      <ConnectedRouter history={history}>{children}</ConnectedRouter>
-    </Provider>
+    <ApolloProvider client={client}>
+      <Provider store={store}>
+        <ConnectedRouter history={history}>{children}</ConnectedRouter>
+      </Provider>
+    </ApolloProvider>
   );
 }
 

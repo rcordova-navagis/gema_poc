@@ -1,0 +1,109 @@
+@import '../../styles/mixins';
+
+$borderRadius: 18px;
+
+.authentication-page {
+  background-size: cover;
+  height: inherit;
+  background-color: #fff;
+
+  .error {
+    text-align: center;
+    margin: 0 0 25px 0;
+  }
+
+  .loading-btn {
+    min-width: 0;
+    position: relative;
+
+    .md-icon {
+      position: absolute;
+      top: -12px;
+      left: 8px;
+
+      svg {
+        circle {
+          //stroke: $globalFontColor;
+        }
+      }
+    }
+  }
+
+  .authentication-container {
+    margin: auto;
+    background-color: #fff;
+
+    .md-paper {
+      background: transparent;
+    }
+  }
+
+  .md-card-title {
+    flex-flow: column-reverse;
+    background-color: $md-primary-color;
+    padding: 8px;
+
+    img {
+      margin: 0;
+    }
+  }
+
+  .authentication-page-body {
+    padding: 16px 16px 0 16px;
+
+    > h3 {
+      text-align: center;
+      margin: 0;
+      color: gray;
+    }
+
+    .md-text-field-container {
+      margin: 10px auto;
+
+      .md-text-field-icon-container {
+        border-radius: $borderRadius;
+        background-color: rgba(255, 255, 255, 0.5);
+
+        input {
+          text-indent: 30px;
+          //color: $globalFontColor;
+          //
+          //&::placeholder {
+          //  color: $globalFontColor;
+          //}
+        }
+
+        //.md-icon {
+        //  color: $globalFontColor;
+        //}
+
+        hr {
+          visibility: hidden;
+        }
+
+        .md-password-btn {
+          right: 12px;
+          top: 10px;
+        }
+
+        .md-text-field-icon--positioned {
+          position: absolute;
+          left: 18px;
+          bottom: 0px;
+        }
+      }
+    }
+  }
+
+  .authentication-page-footer {
+    display: block;
+    text-align: center;
+
+    button {
+      //background-color: #e336d8;
+      //color: $globalFontColor;
+      border-radius: $borderRadius;
+      height: 38px;
+    }
+  }
+}

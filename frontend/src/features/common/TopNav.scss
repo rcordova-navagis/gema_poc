@@ -1,0 +1,22 @@
+@import '../../styles/mixins';
+
+.common-top-nav {
+
+  img.md-title {
+    height: 30px;
+    margin: 8px 16px;
+    cursor: pointer;
+  }
+
+  .md-toolbar--action-right {
+
+    .md-badge-container {
+      .md-badge {
+        right: 3px;
+        top: 8px;
+        height: 18px;
+        width: 18px;
+      }
+    }
+  }
+}

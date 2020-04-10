@@ -3,6 +3,11 @@
 const fs = require('fs');
 const path = require('path');
 const paths = require('./paths');
+const SYSTEM_CONFIG = require('dotenv').config({
+    path: './../.env.frontend'
+});
+
+console.log('SYSTEM_CONFIG: ', SYSTEM_CONFIG);
 
 // Make sure that including paths.js after env.js will read .env variables.
 delete require.cache[require.resolve('./paths')];
@@ -61,23 +66,29 @@ process.env.NODE_PATH = (process.env.NODE_PATH || '')
 const REACT_APP = /^REACT_APP_/i;
 
 function getClientEnvironment(publicUrl) {
-  const raw = Object.keys(process.env)
+    const CURRENT_ENVIRONMENT = process.env.NODE_ENV || 'development';
+    let ENV_VARS = {
+        // Useful for determining whether we’re running in production mode.
+        // Most importantly, it switches React into the correct mode.
+        NODE_ENV: CURRENT_ENVIRONMENT,
+        // Useful for resolving the correct path to static assets in `public`.
+        // For example, <img src={process.env.PUBLIC_URL + '/img/logo.png'} />.
+        // This should only be used as an escape hatch. Normally you would put
+        // images into the `src` and `import` them in code to get their paths.
+        PUBLIC_URL: publicUrl,
+    };
+
+    ENV_VARS['SYSTEM_CONFIG'] = SYSTEM_CONFIG;
+
+    const raw = Object.keys(process.env)
+
     .filter(key => REACT_APP.test(key))
     .reduce(
       (env, key) => {
         env[key] = process.env[key];
         return env;
       },
-      {
-        // Useful for determining whether we’re running in production mode.
-        // Most importantly, it switches React into the correct mode.
-        NODE_ENV: process.env.NODE_ENV || 'development',
-        // Useful for resolving the correct path to static assets in `public`.
-        // For example, <img src={process.env.PUBLIC_URL + '/img/logo.png'} />.
-        // This should only be used as an escape hatch. Normally you would put
-        // images into the `src` and `import` them in code to get their paths.
-        PUBLIC_URL: publicUrl,
-      }
+      ENV_VARS
     );
   // Stringify all values so we can feed into Webpack DefinePlugin
   const stringified = {

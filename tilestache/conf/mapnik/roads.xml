@@ -1,0 +1,26 @@
+<Map srs="+proj=latlong +ellps=WGS84 +datum=WGS84 +no_defs">
+    <Stylesheet><![CDATA[
+        Map
+        {
+            map-bgcolor: #69f;
+        }
+
+        Layer
+        {
+            line-width: 2;
+            line-color: #696;
+            polygon-fill: #6f9;
+        }
+    ]]></Stylesheet>
+    <Layer srs="+proj=latlong +ellps=WGS84 +datum=WGS84 +no_defs">
+        <Datasource>
+            <Parameter name="type">postgis</Parameter>
+            <Parameter name="host">localhost</Parameter>
+            <Parameter name="port">5444</Parameter>
+            <Parameter name="dbname">geocoredb</Parameter>
+            <Parameter name="user">geocoreuser</Parameter>
+            <Parameter name="password">mYge0cor3</Parameter>
+            <Parameter name="table">SELECT way AS geometry, osm_id, name AS road_name FROM planet_osm_roads</Parameter>
+        </Datasource>
+    </Layer>
+</Map>

@@ -1,0 +1,8 @@
+@import '../../styles/mixins';
+
+.common-my-nav-drawer {
+  > nav {
+    z-index: 110;
+  }
+}
+

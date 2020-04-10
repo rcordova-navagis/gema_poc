@@ -1,6 +1,8 @@
-import { WelcomePage } from './';
+import { IndexPage } from './';
 
 export default {
   path: '',
-  childRoutes: [{ path: 'welcome-page', component: WelcomePage, isIndex: true }],
+  childRoutes: [
+    { path: '/', component: IndexPage, isIndex: true },
+  ],
 };

@@ -1,0 +1,73 @@
+@import '../../styles/mixins';
+
+.geocore-map-layer-menu-toggle-btn {
+  position: absolute;
+  top: 65px;
+  left: 15px;
+  z-index: 102;
+  background-color: white;
+  border-radius: 6px;
+}
+
+#geocore-map-layer-menu {
+  position: absolute;
+  top: 65px;
+  left: 15px;
+  bottom: 15px;
+  z-index: 102;
+  max-width: 280px;
+  min-height: 10%;
+  max-height: 40%;
+  overflow: auto;
+  padding: 0;
+
+  .geocore-map-layer-menu-header {
+    height: 38px;
+
+    .md-btn {
+      margin: 0;
+    }
+
+    .md-title {
+      margin-left: 0;
+    }
+
+    .md-toolbar--action-right {
+      margin: 0;
+    }
+
+    .geocore-map-layer-menu-filter {
+
+      .md-text-field-icon-container {
+        position: relative;
+        line-height: 1.5;
+        margin: 10px 0 8px 0;
+
+        hr.md-divider {
+          display: none;
+        }
+
+        i.md-text-field-icon {
+          position: absolute;
+          left: 3px;
+          margin-bottom: 0;
+          color: $menuFontColor;
+          cursor: pointer;
+        }
+
+        .md-text-field-divider-container {
+          margin-left: 0;
+        }
+
+        input.md-text-field {
+          padding-left: 30px;
+          margin-top: 0;
+        }
+      }
+    }
+  }
+
+  .geocore-map-layer-menu-body {
+    padding: 4px 2px
+  }
+}

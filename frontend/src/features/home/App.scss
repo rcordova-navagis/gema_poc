@@ -1,4 +1,27 @@
 @import '../../styles/mixins';
 
-.home-app {
+
+.app-base-page {
+  width: 100vw;
+  height: inherit;
+
+  .app-base-page-body {
+     height: 100%;
+
+    .md-cell.app-header-cell {
+      width: 100vw;
+      height: 48px;
+    }
+
+    .md-cell.page-content-container {
+      width: 100vw;
+      height: calc(100% - 48px);
+    }
+  }
+
+}
+
+.page-container {
+  width: inherit;
+  height: inherit;
 }
