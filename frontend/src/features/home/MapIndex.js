@@ -9,6 +9,8 @@ import {GoogleMapsOverlay} from '@deck.gl/google-maps';
 import {GeoJsonLayer} from '@deck.gl/layers';
 import {MVTLayer} from '@deck.gl/geo-layers';
 
+const TILESTACHE_BASE_URL = 'http://192.168.178.4:1001/api/tilestache';
+
 
 const MyMapComponent = compose(
     withProps({
@@ -37,6 +39,7 @@ const MyMapComponent = compose(
             mapTypeControl: false,
             streetViewControl: false,
             controlSize: 34,
+            clickableIcons: false
         }}
         ref={props.onMapMounted}
     >
@@ -61,70 +64,97 @@ export default class MapIndex extends Component {
         }
     });
 
+    setTooltip(object, content, x, y) {
+        const el = document.getElementById('tooltip');
+        if (object) {
+            el.innerHTML = content;
+            el.style.display = 'block';
+            el.style.position = 'absolute';
+            el.style.zIndex = 11;
+            el.style.backgroundColor = 'white';
+            el.style.padding = '8px';
+            el.style.left = x + 'px';
+            el.style.top = y + 'px';
+        } else {
+            el.style.display = 'none';
+        }
+    }
+
+    onClickObject(info) {
+        let content = '';
+        for (let i in info.object.properties) {
+            content += `<b>${i}</b> ${info.object.properties[i]} <br>`;
+        }
+        this.setTooltip.call(this, info.object, content, info.x, info.y);
+    }
+
+    addLayers() {
+        let layers = [
+            // new MVTLayer({
+            //     data: `${TILESTACHE_BASE_URL}/osmroads/{z}/{x}/{y}.pbf`,
+            //     pickable: false,
+            //     stroked: true,
+            //     filled: true,
+            //     extruded: false,
+            //     lineWidthUnits: 'pixels',
+            //     lineWidthScale: 1,
+            //     getFillColor: [160, 160, 180],
+            //     getLineColor: [0, 0, 255, 200],
+            //     getLineWidth: 1,
+            // }),
+
+            new MVTLayer({
+                data: `${TILESTACHE_BASE_URL}/osmpoints/{z}/{x}/{y}.pbf`,
+                pickable: true,
+                filled: true,
+                getFillColor: [200, 0, 0],
+                getRadius: 20,
+                pointRadiusMinPixels: 4,
+                pointRadiusMaxPixels: 4,
+                onClick: this.onClickObject.bind(this),
+            }),
+
+            // new MVTLayer({
+            //     data: `${TILESTACHE_BASE_URL}/osmpolygons/{z}/{x}/{y}.pbf`,
+            //     pickable: true,
+            //     stroked: true,
+            //     filled: false,
+            //     extruded: false,
+            //     lineWidthUnits: 'pixels',
+            //     lineWidthScale: 1,
+            //     getLineColor: [0, 200, 0, 50],
+            //     getLineWidth: 1,
+            //     onClick: this.onClickObject.bind(this),
+            // })
+        ];
+
+        // let _layers = this.deckglOverlay.props.layers;
+        // layers.forEach( layer => {
+        //     _layers = _layers.concat(layer)
+        // });
+
+        this.deckglOverlay.setProps({
+            layers: layers
+        });
+    }
+
     handleMapLoad(map) {
         if (!map) return;
-
-        let that = this;
 
         console.log('handleMapLoad: ',map, ' deckglOverlay: ',this.deckglOverlay);
 
         this.deckglOverlay.setMap(map);
 
-        // map.addListener('zoom_changed', function () {
-        //     this.deckglOverlay.setProps({layers: []});
-        // }.bind(this));
-
-        // let ymax,
-        //     y;
-
-        // const TILESTACHE_BASE_URL = 'http://192.168.178.4:8080/api/tilestache',
-        const TILESTACHE_BASE_URL = 'http://192.168.178.4:1001',
-              TILESTACHE_LAYER = 'osmroads';
-
         google.maps.event.addListenerOnce(map, 'tilesloaded', function () {
-            let layer = new MVTLayer({
-                data: `${TILESTACHE_BASE_URL}/${TILESTACHE_LAYER}/{z}/{x}/{y}.pbf`,
-                pickable: false,
-                stroked: true,
-                filled: true,
-                extruded: false,
-                lineWidthUnits: 'pixels',
-                lineWidthScale: 1,
-                getFillColor: [160, 160, 180, 200],
-                getLineColor: [0, 0, 255, 200],
-                getLineWidth: 1,
-            });
-
-            this.deckglOverlay.setProps({
-                layers: this.deckglOverlay.props.layers.concat(layer)
-            });
+            this.addLayers.call(this);
         }.bind(this));
-
-        // let ymax,
-        //     y;
-        // let imageTile = new google.maps.ImageMapType({
-        //     getTileUrl: function (coord, zoom) {
-        //         ymax = 1 << zoom;
-        //         // y = ymax - coord.y - 1;
-        //         y = coord.y;
-        //
-        //         that.setLayer.call(that, zoom, coord.x, y);
-        //
-        //         // return `${TILESTACHE_BASE_URL}/${TILESTACHE_LAYER}/${zoom}/${coord.x}/${y}.png`;
-        //         return "http://www.maptiler.org/img/none.png";
-        //     },
-        //     tileSize: new google.maps.Size(256, 256),
-        //     name: "osmroads",
-        //     opacity: 1.0
-        // });
-        //
-        // map.overlayMapTypes.insertAt(1, imageTile);
   }
 
   render() {
     return (
         <div className="home-map-index">
           <LayerMenu />
+            <span id="tooltip"></span>
 
           <MyMapComponent onMapLoad={this.handleMapLoad.bind(this)} />
         </div>

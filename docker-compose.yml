@@ -31,6 +31,20 @@ services:
     networks:
       - back-tier
 
+  geocore-redis:
+    container_name: geocore-redis
+    image: bitnami/redis:5.0
+    restart: always
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_MASTER_PORT_NUMBER=6379
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data/redis:/bitnami/redis/data
+    networks:
+      - back-tier
+
   geocore-api:
     restart: always
     build:
@@ -68,8 +82,10 @@ services:
       - ./.env
     depends_on:
       - geocore-pgdb
+      - geocore-redis
     links:
       - geocore-pgdb
+      - geocore-redis
     networks:
       - back-tier
 

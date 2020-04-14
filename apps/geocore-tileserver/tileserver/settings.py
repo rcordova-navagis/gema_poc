@@ -71,7 +71,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
 REST_FRAMEWORK = {
@@ -82,6 +82,18 @@ REST_FRAMEWORK = {
     ]
 }
 
+if DEBUG:
+    INSTALLED_APPS += [
+        'corsheaders'
+    ]
+
+    MIDDLEWARE += [
+        'corsheaders.middleware.CorsMiddleware'
+    ]
+
+    CORS_ORIGIN_ALLOW_ALL = True
+    CORS_ALLOW_CREDENTIALS = True
+
 # TILESTACHE_FILE_CONF = os.path.join(BASE_DIR, 'conf', 'tilestache', 'tilestache.cfg')
 # TILESTACHE_DIRPATH = BASE_DIR
 # TILESTACHE_CACHE = {
@@ -91,6 +103,21 @@ REST_FRAMEWORK = {
 #     "path": "/apps/tileserver/cache",
 #     "umask": "000"
 # }
+# TILESTACHE_CACHE = {
+#     "class": "TileStache.Goodies.Caches.GoogleCloud:Cache",
+#     "kwargs": {
+#         "bucket": "geocore-initiative",
+#         "access": "GOOGZVWUFK55FKBYGZJU3NI5",
+#         "secret": "nP4ai27ZSBaooiUqDvfRnNCLo6VBQMtLg5xYbzXS"
+#     }
+# }
+TILESTACHE_CACHE = {
+    "name": "Redis",
+    "host": "geocore-redis",
+    "port": 6379,
+    "db": 0,
+    "key prefix": "geocore"
+}
 
 ROOT_URLCONF = 'tileserver.urls'
 

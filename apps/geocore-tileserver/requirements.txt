@@ -4,6 +4,7 @@ certifi==2020.4.5.1
 chardet==3.0.4
 Django==3.0.4
 django-appconf==1.0.4
+django-cors-headers==3.2.1
 django-filter==1.1.0
 django-tilestache==2.0.9
 djangorestframework==3.11.0
@@ -20,6 +21,7 @@ psycopg2-binary==2.8.4
 pyclipper==1.1.0.post3
 pylru==1.2.0
 pytz==2019.3
+redis==3.4.1
 requests==2.23.0
 Shapely==1.7.0
 simplejson==3.17.0

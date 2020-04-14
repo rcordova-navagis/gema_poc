@@ -14,12 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
-from django.contrib import admin
 from django.urls import include
 from django_tilestache import urls as django_tilestache_urls
+from . import views
 
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^tilestache/layers/(?P<layer_name>[-\w]+)', views.CreateTileView.as_view(), name='tilestache-layer'),
+
     url(r'^', include(django_tilestache_urls))
 ]
