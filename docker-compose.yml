@@ -56,7 +56,8 @@ services:
       - ./apps/geocore-api:/apps/api
       - ./data:/data
     ports:
-      - "8080:8080"
+      # HOST:CONTAINER
+      - "80:8080"
     env_file:
       - ./.env
     depends_on:
@@ -75,7 +76,6 @@ services:
       dockerfile: Dockerfile
     container_name: geocore-tileserver
     command: python3 manage.py runserver 0.0.0.0:8088
-    #command: gunicorn -w 2 --preload -b 0.0.0.0:8090 "TileStache:WSGITileServer('/apps/tileserver/conf/tilestache/osmroads.cfg')" --log-level=DEBUG --timeout=540
     volumes:
       - ./apps/geocore-tileserver:/apps/tileserver
     env_file:
@@ -103,6 +103,30 @@ services:
       - geocore-tileserver
     links:
       - geocore-tileserver
+    networks:
+      - back-tier
+
+  geocore-uut-backend:
+    restart: always
+    build:
+      context: ./apps/geocore-uut
+      dockerfile: Dockerfile
+    container_name: geocore-uut-backend
+    command: python manage.py runserver 0.0.0.0:8081
+    volumes:
+      - ./apps/geocore-uut:/apps/uut
+      - ./data:/data
+    ports:
+      # HOST:CONTAINER
+      - "81:8081"
+    env_file:
+      - ./.env
+    depends_on:
+      - geocore-pgdb
+      - geocore-mongodb
+    links:
+      - geocore-pgdb
+      - geocore-mongodb
     networks:
       - back-tier
 
