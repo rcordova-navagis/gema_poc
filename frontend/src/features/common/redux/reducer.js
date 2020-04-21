@@ -8,9 +8,11 @@
 
 import initialState from './initialState';
 import { reducer as toggleNavigationDrawerReducer } from './toggleNavigationDrawer';
+import { reducer as mapLoadedReducer } from './mapLoaded';
 
 const reducers = [
   toggleNavigationDrawerReducer,
+  mapLoadedReducer,
 ];
 
 export default function reducer(state = initialState, action) {

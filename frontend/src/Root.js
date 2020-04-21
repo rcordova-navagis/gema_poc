@@ -42,7 +42,7 @@ function renderRouteConfigV3(routes, contextPath) {
       );
     } else if (item.component) {
       children.push(
-        <Route key={newContextPath} component={item.component} path={newContextPath} exact />,
+          <Route key={newContextPath} render={props => <item.component {...props}></item.component>} path={newContextPath} exact />,
       );
     } else if (item.childRoutes) {
       item.childRoutes.forEach(r => renderRoute(r, newContextPath));
@@ -70,3 +70,4 @@ function Root() {
 }
 
 export default hot(module)(Root);
+

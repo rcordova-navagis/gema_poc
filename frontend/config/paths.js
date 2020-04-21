@@ -81,6 +81,7 @@ module.exports = {
   publicUrl: getPublicUrl(resolveApp('package.json')),
   servedPath: getServedPath(resolveApp('package.json')),
   libsSrc: resolveApp('libs'),
+  geocoreMapGlNodeSrc: resolveApp('node_modules/geocore-mapgl')
 };
 
 module.exports.moduleFileExtensions = moduleFileExtensions;

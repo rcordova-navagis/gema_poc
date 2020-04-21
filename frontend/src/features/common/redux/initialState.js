@@ -9,6 +9,7 @@
 const initialState = {
     showNavDrawer: false,
     notifications: [],
+    isMapLoaded: false,
 };
 
 export default initialState;

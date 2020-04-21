@@ -1,9 +1,8 @@
-import React, {Fragment, Component, useState } from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import * as actions from './redux/actions';
+import React, {Fragment, useState } from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {toggleNavigationDrawer} from './redux/actions';
 import {switchMapDriver} from './../config/redux/switchMapDriver';
-import {withRouter} from "react-router";
+// import {withRouter} from "react-router";
 import {AppBar, Toolbar, IconButton, Badge, Menu, MenuItem} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
@@ -33,19 +32,19 @@ const MyMenu = props => {
                 </Badge>
             </IconButton>
 
-            <IconButton
-                edge="end"
-                aria-label="account of current user"
-                aria-controls="primary-search-account-menu"
-                aria-haspopup="true"
-                onClick={props.actions.switchMapDriver}
-                color="inherit" >
-                {
-                    props.config.MAP_DRIVER === 'gmap'
-                        ? <PublicIcon />
-                        : <VpnLockIcon />
-                }
-            </IconButton>
+            {/*<IconButton*/}
+            {/*    edge="end"*/}
+            {/*    aria-label="account of current user"*/}
+            {/*    aria-controls="primary-search-account-menu"*/}
+            {/*    aria-haspopup="true"*/}
+            {/*    onClick={() => props.dispatch(switchMapDriver())}*/}
+            {/*    color="inherit" >*/}
+            {/*    {*/}
+            {/*        props.config.MAP_DRIVER === 'gmap'*/}
+            {/*            ? <PublicIcon />*/}
+            {/*            : <VpnLockIcon />*/}
+            {/*    }*/}
+            {/*</IconButton>*/}
 
             <IconButton
                 edge="end"
@@ -79,10 +78,9 @@ const MyMenu = props => {
     );
 };
 
-class TopNav extends Component {
-
-  render() {
-    let that = this;
+function TopNav (props) {
+    const config = useSelector(state => state.config);
+    const dispatch = useDispatch();
 
     return (
         <AppBar position="static"
@@ -91,7 +89,7 @@ class TopNav extends Component {
               <IconButton
                   edge="start"
                   className="menu-btn"
-                  onClick={this.props.actions.toggleNavigationDrawer}
+                  onClick={() => dispatch(toggleNavigationDrawer())}
                   color="inherit"
                   aria-label="open drawer">
                   <MenuIcon />
@@ -101,37 +99,17 @@ class TopNav extends Component {
                   <img src={geocoreLogo}
                        alt=""
                        onClick={() => {
-                           that.props.history.push('/');
+                           props.history.push('/');
                        }}
                   />
               </span>
 
               <span style={{flexGrow: 1}}></span>
 
-              <MyMenu {...this.props} />
+              <MyMenu config={config} dispatch={dispatch} />
           </Toolbar>
         </AppBar>
     );
-  }
 }
 
-/* istanbul ignore next */
-function mapStateToProps(state) {
-    return {
-        config: state.config,
-        common: state.common
-    };
-}
-
-/* istanbul ignore next */
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators({...actions, switchMapDriver: switchMapDriver}, dispatch)
-    };
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(TopNav));
-
+export default TopNav;
