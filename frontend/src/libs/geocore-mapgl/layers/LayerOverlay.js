@@ -25,26 +25,23 @@ function LayerOverlayComp (props) {
 }
 
 const LayerOverlay = forwardRef((props, ref) => {
-    if (ref && ref.current) {
-        return (
-            <LayerOverlayComp config={props.config}
-                              layers={props.layers}
-                              map={ref.current}
-            />
-        );
-    }
-
-    return null;
+    return (
+        <LayerOverlayComp config={props.config}
+                          layers={props.layers}
+                          map={ref && ref.current ? ref.current : null}
+        />
+    );
 });
 
-function shouldNotUpdate(props, nextProps) {
-    const [funcs, nextFuncs] = [functions(props), functions(nextProps)];
-    const noPropChange = isEqual(omit(props, funcs), omit(nextProps, nextFuncs));
-    const noFuncChange =
-        funcs.length === nextFuncs.length &&
-        funcs.every(fn => props[fn].toString() === nextProps[fn].toString());
-
-    return noPropChange && noFuncChange;
-}
-
-export default React.memo(LayerOverlay, shouldNotUpdate);
+// function shouldNotUpdate(props, nextProps) {
+//     const [funcs, nextFuncs] = [functions(props), functions(nextProps)];
+//     const noPropChange = isEqual(omit(props, funcs), omit(nextProps, nextFuncs));
+//     const noFuncChange =
+//         funcs.length === nextFuncs.length &&
+//         funcs.every(fn => props[fn].toString() === nextProps[fn].toString());
+//
+//     return noPropChange && noFuncChange;
+// }
+//
+// export default React.memo(LayerOverlay, shouldNotUpdate);
+export default LayerOverlay;

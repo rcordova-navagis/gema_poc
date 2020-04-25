@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import {Button, Popover, Grid, Divider} from '@material-ui/core';
+import {Button, Popover, Grid, Container, Divider} from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
 import {useSwitchMapDriver, useSwitchMapType} from './../../config/redux/hooks';
 
@@ -35,15 +35,27 @@ const MapSettingsContent = (props) => {
 
 
     return (
-        <Grid container spacing={1} className="common-map-map-settings-content">
-            <Grid container item>
-                <h3>Driver</h3>
-                <Grid container item spacing={1}>
+            <Container zeroMinWidth
+                       className="common-map-map-settings-content">.
+
+            <Grid container
+                  spacing={1}
+                  zeroMinWidth>
+
+                <Grid container item>
+                    <h3>Driver</h3>
+                </Grid>
+
+                <Grid container
+                      item
+                      zeroMinWidth
+                      className="common-map-map-settings-content-item-body">
                     {
                         MAP_DRIVERS.map(driver => {
                             return (
                                 <Button variant="outlined"
                                         color="primary"
+                                        noWrap
                                         onClick={() => {
                                             switchMapDriver(driver.value)
                                         }}
@@ -57,14 +69,26 @@ const MapSettingsContent = (props) => {
             </Grid>
 
 
-            <Grid container item>
-                <h3>Map Types</h3>
-                <Grid container item spacing={1}>
+            <Grid container
+                  spacing={1}
+                  zeroMinWidth>
+
+                <Grid container
+                      item
+                >
+                    <h3>Map Types</h3>
+                </Grid>
+
+                <Grid container
+                      item
+                      zeroMinWidth
+                      className="common-map-map-settings-content-item-body">
                     {
                         MAP_TYPES.map(mapType => {
                             return (
                                 <Button variant="outlined"
                                         color="primary"
+                                        noWrap
                                         onClick={() => {
                                             switchMapType(mapType.value);
                                         }}
@@ -76,7 +100,7 @@ const MapSettingsContent = (props) => {
                     }
                 </Grid>
             </Grid>
-        </Grid>
+        </Container>
     );
 };
 

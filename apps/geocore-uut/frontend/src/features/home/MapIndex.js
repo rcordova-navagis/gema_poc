@@ -1,182 +1,89 @@
 /*global google*/
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import * as actions from './redux/actions';
-import {GeocoreMap} from 'geocore-mapgl';
-
-import LayerMenu from "../common/LayerMenu";
-import {getTile} from "../common/geocore-mapviz/VectorLayer";
-import {GoogleMapsOverlay} from '@deck.gl/google-maps';
-import {GeoJsonLayer} from '@deck.gl/layers';
+import React, { useState, useRef, useCallback } from 'react';
+import {CONFIG} from './../../config';
+import {useSelector} from 'react-redux';
+import {GeocoreMap, LayerOverlay} from './../../libs/geocore-mapgl';
+import LayerMenu from '../common/map/LayerMenu';
+import MapSettings from '../common/map/MapSettings';
+import {useSetMapViewport} from '../config/redux/setMapViewport';
 import {MVTLayer} from '@deck.gl/geo-layers';
+import {GeoJsonLayer} from '@deck.gl/layers';
 
-const TILESTACHE_BASE_URL = 'http://192.168.10.10:1001/api/tilestache';
+const _mapOptions = {};
+// let _layerManager;
 
-const _mapOptions = {
+const layers = [
+        // new MVTLayer({
+        //     data: `${CONFIG.TILESTACHE_BASE_URL}/osmroads/{z}/{x}/{y}.pbf`,
+        //     pickable: false,
+        //     stroked: true,
+        //     filled: true,
+        //     extruded: false,
+        //     lineWidthUnits: 'pixels',
+        //     lineWidthScale: 1,
+        //     getFillColor: [160, 160, 180],
+        //     getLineColor: [0, 0, 255, 200],
+        //     getLineWidth: 1,
+        // }),
 
-};
+        new MVTLayer({
+            data: `${CONFIG.TILESTACHE_BASE_URL}/osmpoints/{z}/{x}/{y}.pbf`,
+            pickable: false,
+            filled: true,
+            getFillColor: [200, 0, 0],
+            getRadius: 20,
+            pointRadiusMinPixels: 4,
+            pointRadiusMaxPixels: 4
+        }),
 
-class MapIndex extends Component {
+        // new MVTLayer({
+        //     data: `${CONFIG.TILESTACHE_BASE_URL}/osmpolygons/{z}/{x}/{y}.pbf`,
+        //     pickable: true,
+        //     stroked: true,
+        //     filled: false,
+        //     extruded: false,
+        //     lineWidthUnits: 'pixels',
+        //     lineWidthScale: 1,
+        //     getLineColor: [0, 200, 0, 50],
+        //     getLineWidth: 1,
+        //     onClick: this.onClickObject.bind(this),
+        // })
+];
 
-    // state = {
-    //     layers: [],
-    //     layerIds: []
-    // };
+function MapIndex (props) {
+    const mapRef = useRef(null);
 
-    constructor(props) {
-        super(props);
+    const [mapLoaded, setMapLoaded] = useState(false);
 
-        this.state = {
-            layers: [],
-            layerIds: [],
-            mapDriver: 'gmap'
-        };
+    const config = useSelector(state => state.config);
 
-        this.deckglOverlay = new GoogleMapsOverlay({
-            layers: [],
-            onWebGLInitialized: (context) => {
-                console.log('onWebGLInitialized: ', context);
-            },
-            onAfterRender: (context) => {
-                console.log('onAfterRender: ', context);
-            }
-        });
-    }
+    const {setMapViewport} = useSetMapViewport();
 
-    // deckglOverlay = new GoogleMapsOverlay({
-    //     layers: [],
-    //     onWebGLInitialized: (context) => {
-    //         console.log('onWebGLInitialized: ', context);
-    //     },
-    //     onAfterRender: (context) => {
-    //         console.log('onAfterRender: ', context);
-    //     }
-    // });
+    const handleMapLoad = useCallback((map) => {
+            if (!map) return;
 
-    setTooltip(object, content, x, y) {
-        const el = document.getElementById('tooltip');
-        if (object) {
-            el.innerHTML = content;
-            el.style.display = 'block';
-            el.style.position = 'absolute';
-            el.style.zIndex = 11;
-            el.style.backgroundColor = 'white';
-            el.style.padding = '8px';
-            el.style.left = x + 'px';
-            el.style.top = y + 'px';
-        } else {
-            el.style.display = 'none';
-        }
-    }
+            mapRef.current = map;
 
-    onClickObject(info) {
-        let content = '';
-        for (let i in info.object.properties) {
-            content += `<b>${i}</b> ${info.object.properties[i]} <br>`;
-        }
-        this.setTooltip.call(this, info.object, content, info.x, info.y);
-    }
+            setMapLoaded(true);
+            // this.addLayers.call(this);
+    }, []);
 
-    addLayers() {
-        let layers = [
-            // new MVTLayer({
-            //     data: `${TILESTACHE_BASE_URL}/osmroads/{z}/{x}/{y}.pbf`,
-            //     pickable: false,
-            //     stroked: true,
-            //     filled: true,
-            //     extruded: false,
-            //     lineWidthUnits: 'pixels',
-            //     lineWidthScale: 1,
-            //     getFillColor: [160, 160, 180],
-            //     getLineColor: [0, 0, 255, 200],
-            //     getLineWidth: 1,
-            // }),
+    return (
+      <div className="home-map-index">
+        <LayerMenu />
 
-            new MVTLayer({
-                data: `${TILESTACHE_BASE_URL}/osmpoints/{z}/{x}/{y}.pbf`,
-                pickable: true,
-                filled: true,
-                getFillColor: [200, 0, 0],
-                getRadius: 20,
-                pointRadiusMinPixels: 4,
-                pointRadiusMaxPixels: 4,
-                onClick: this.onClickObject.bind(this),
-            }),
+        <MapSettings config={config} />
 
-            // new MVTLayer({
-            //     data: `${TILESTACHE_BASE_URL}/osmpolygons/{z}/{x}/{y}.pbf`,
-            //     pickable: true,
-            //     stroked: true,
-            //     filled: false,
-            //     extruded: false,
-            //     lineWidthUnits: 'pixels',
-            //     lineWidthScale: 1,
-            //     getLineColor: [0, 200, 0, 50],
-            //     getLineWidth: 1,
-            //     onClick: this.onClickObject.bind(this),
-            // })
-        ];
-
-        // let _layers = this.deckglOverlay.props.layers;
-        // layers.forEach( layer => {
-        //     _layers = _layers.concat(layer)
-        // });
-
-        this.deckglOverlay.setProps({
-            layers: layers
-        });
-    }
-
-    handleMapLoad(map) {
-        if (!map) return;
-
-        console.log('handleMapLoad: ',map, ' deckglOverlay: ',this.deckglOverlay);
-
-        this.deckglOverlay.setMap(map);
-
-        // google.maps.event.addListenerOnce(map, 'tilesloaded', function () {
-            this.addLayers.call(this);
-        // }.bind(this));
-  }
-
-  render() {
-      // const MyMapComponent = this.props.config.MAP_DRIVER === 'gmap'
-      //                        ? GoogleMapComponent()
-      //                        : MapboxMap();
-
-      return (
-        <div className="home-map-index">
-          <LayerMenu />
-
-          <span id="tooltip"></span>
-
-          <GeocoreMap
-              onMapLoad={this.handleMapLoad.bind(this)}
-              config={this.props.config}
-              mapOptions={_mapOptions}
-          />
-        </div>
+        <GeocoreMap
+            onMapLoad={handleMapLoad}
+            onViewportChange={setMapViewport}
+            config={config}
+            mapOptions={_mapOptions}
+        >
+            <LayerOverlay config={config} layers={layers} ref={mapRef} />
+        </GeocoreMap>
+      </div>
     );
-  }
 }
 
-/* istanbul ignore next */
-function mapStateToProps(state) {
-    return {
-        config: state.config,
-        common: state.common
-    };
-}
-
-/* istanbul ignore next */
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators({ ...actions,}, dispatch)
-    };
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(MapIndex);
+export default MapIndex;

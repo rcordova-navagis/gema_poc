@@ -14,6 +14,37 @@ services:
     networks:
       - back-tier
 
+  geocore-rabbitmq:
+    container_name: geocore-rabbitmq
+    image: rabbitmq/3-management
+    restart: always
+    volumes:
+      - "./data/rabbitmq/etc/:/etc/rabbitmq/"
+      - "./data/rabbitmq/data/:/var/lib/rabbitmq/"
+      - "./data/rabbitmq/logs/:/var/log/rabbitmq/"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    env_file:
+      - ./.env
+    networks:
+      - back-tier
+
+  # Celery worker
+  geocore-worker:
+    build:
+      context: ./apps/geocore-worker
+      dockerfile: Dockerfile.celery
+    #command: sh ./run-celery-worker.sh
+    volumes:
+      - ./apps/geocore-worker:/apps/worker
+    links:
+      - geocore-rabbitmq
+      - geocore-uut-backend
+    depends_on:
+      - geocore-rabbitmq
+      - geocore-uut-backend
+
 #  geocore-mongodb:
 #    container_name: geocore-mongodb
 #    image: mongo:latest
@@ -31,19 +62,19 @@ services:
 #    networks:
 #      - back-tier
 
-  geocore-redis:
-    container_name: geocore-redis
-    image: bitnami/redis:5.0
-    restart: always
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
-      - REDIS_MASTER_PORT_NUMBER=6379
-    ports:
-      - "6379:6379"
-    volumes:
-      - ./data/redis:/bitnami/redis/data
-    networks:
-      - back-tier
+#  geocore-redis:
+#    container_name: geocore-redis
+#    image: bitnami/redis:5.0
+#    restart: always
+#    environment:
+#      - ALLOW_EMPTY_PASSWORD=yes
+#      - REDIS_MASTER_PORT_NUMBER=6379
+#    ports:
+#      - "6379:6379"
+#    volumes:
+#      - ./data/redis:/bitnami/redis/data
+#    networks:
+#      - back-tier
 
   geocore-api:
     restart: always
@@ -69,64 +100,64 @@ services:
     networks:
       - back-tier
 
-  geocore-tileserver:
+  geocore-uut-backend:
     restart: always
     build:
-      context: ./apps/geocore-tileserver
+      context: ./apps/geocore-uut/backend
       dockerfile: Dockerfile
-    container_name: geocore-tileserver
-    command: python3 manage.py runserver 0.0.0.0:8088
+    container_name: geocore-uut-backend
+    command: python manage.py runserver 0.0.0.0:8081
     volumes:
-      - ./apps/geocore-tileserver:/apps/tileserver
+      - ./apps/geocore-uut/backend:/apps/uut
+      - ./data:/data
+    ports:
+      # HOST:CONTAINER
+      - "81:8081"
     env_file:
       - ./.env
     depends_on:
       - geocore-pgdb
-      - geocore-redis
+      - geocore-rabbitmq
     links:
       - geocore-pgdb
-      - geocore-redis
+      - geocore-rabbitmq
     networks:
       - back-tier
 
-  geocore-tileserver-nginx:
-    restart: always
-    build:
-      context: ./apps/geocore-tileserver
-      dockerfile: Dockerfile.nginx
-    container_name: geocore-tileserver-nginx
-    volumes:
-      - ./apps/geocore-tileserver:/apps/tileserver
-    ports:
-      - "1001:1001"
-    depends_on:
-      - geocore-tileserver
-    links:
-      - geocore-tileserver
-    networks:
-      - back-tier
-
-#  geocore-uut-backend:
+#  geocore-tileserver:
 #    restart: always
 #    build:
-#      context: ./apps/geocore-uut/backend
+#      context: ./apps/geocore-tileserver
 #      dockerfile: Dockerfile
-#    container_name: geocore-uut-backend
-#    command: python manage.py runserver 0.0.0.0:8081
+#    container_name: geocore-tileserver
+#    command: python3 manage.py runserver 0.0.0.0:8088
 #    volumes:
-#      - ./apps/geocore-uut:/apps/uut
-#      - ./data:/data
-#    ports:
-#      # HOST:CONTAINER
-#      - "81:8081"
+#      - ./apps/geocore-tileserver:/apps/tileserver
 #    env_file:
 #      - ./.env
 #    depends_on:
 #      - geocore-pgdb
-##      - geocore-mongodb
+#      - geocore-redis
 #    links:
 #      - geocore-pgdb
-##      - geocore-mongodb
+#      - geocore-redis
+#    networks:
+#      - back-tier
+#
+#  geocore-tileserver-nginx:
+#    restart: always
+#    build:
+#      context: ./apps/geocore-tileserver
+#      dockerfile: Dockerfile.nginx
+#    container_name: geocore-tileserver-nginx
+#    volumes:
+#      - ./apps/geocore-tileserver:/apps/tileserver
+#    ports:
+#      - "1001:1001"
+#    depends_on:
+#      - geocore-tileserver
+#    links:
+#      - geocore-tileserver
 #    networks:
 #      - back-tier
 

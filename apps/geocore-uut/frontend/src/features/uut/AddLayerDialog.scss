@@ -1,0 +1,17 @@
+@import '../../styles/mixins';
+
+.uut-add-layer-dialog {
+  .MuiToolbar-regular {
+    min-height: 48px;
+    height: 48px;
+    padding: 0 0.5em;
+  }
+
+  .MuiDialogContent-root {
+    overflow: hidden;
+
+    .MuiStepper-root {
+      padding: 0 1.5em 1.5em 1.5em;
+    }
+  }
+}

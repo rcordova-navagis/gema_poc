@@ -1,0 +1,15 @@
+
+.geocore-toolbar {
+  height: 48px !important;
+  min-height: 0 !important;
+  padding: 0 12px 0 0 !important;
+
+  .geocore-toolbar-brand {
+    > img {
+      height: 30px;
+      margin: 8px 16px;
+      cursor: pointer;
+    }
+  }
+}
+

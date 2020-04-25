@@ -2,7 +2,7 @@
 FROM python:3.6.10
 
 # set work directory
-WORKDIR /app/uut
+WORKDIR /apps/uut
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -25,11 +25,11 @@ RUN apt-get update -y \
 
 # install dependencies
 RUN pip install --upgrade pip
-COPY ./requirements/development.txt /app/uut/requirements.txt
+COPY ./requirements/development.txt /apps/uut/requirements.txt
 RUN pip install -r requirements.txt
 
 # copy project
-COPY . /app/uut
+COPY . /apps/uut
 
 # run entrypoint.sh
-ENTRYPOINT ["/app/uut/entrypoint.sh"]
+ENTRYPOINT ["/apps/uut/entrypoint.sh"]

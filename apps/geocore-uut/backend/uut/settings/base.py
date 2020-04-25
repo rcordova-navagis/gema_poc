@@ -85,7 +85,7 @@ REST_FRAMEWORK = {
 
 SITE_ID = 1
 
-ROOT_URLCONF = 'geocore.urls'
+ROOT_URLCONF = 'uut.urls'
 
 TEMPLATES = [
     {
@@ -117,7 +117,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-WSGI_APPLICATION = 'geocore.wsgi.application'
+WSGI_APPLICATION = 'uut.wsgi.application'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

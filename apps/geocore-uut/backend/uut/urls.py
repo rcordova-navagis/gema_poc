@@ -16,16 +16,18 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import url
-from django.contrib import admin
 from django.urls import include, path
+from django.http import HttpResponse
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls)
+    url(r'^tests/', lambda request: HttpResponse("Hello World", content_type="text/plain")),
+
+    path('layers/', include('layers.urls', namespace='layers')),
+    path('datasets/', include('datasets.urls', namespace='datasets'))
 ]
 
 if settings.DEBUG:
-
     import debug_toolbar
 
     urlpatterns = [

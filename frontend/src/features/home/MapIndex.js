@@ -1,5 +1,5 @@
 /*global google*/
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import {CONFIG} from './../../config';
 import {useSelector} from 'react-redux';
 import {GeocoreMap, LayerOverlay} from './../../libs/geocore-mapgl';
@@ -67,6 +67,17 @@ function MapIndex (props) {
             setMapLoaded(true);
             // this.addLayers.call(this);
     }, []);
+
+    useEffect(function() {
+        return function cleanup() {
+            if (mapRef && mapRef.current) {
+                mapRef.current = null;
+            }
+
+            setMapLoaded(false);
+        }
+    }, []);
+
 
     return (
       <div className="home-map-index">

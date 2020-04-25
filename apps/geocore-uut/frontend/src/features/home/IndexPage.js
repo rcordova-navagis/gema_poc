@@ -14,7 +14,7 @@ export class IndexPage extends Component {
   render() {
     return (
       <div className="page-component home-index-page">
-        <MapIndex />
+
       </div>
     );
   }

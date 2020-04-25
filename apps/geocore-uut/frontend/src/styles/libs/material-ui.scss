@@ -18,3 +18,13 @@ header.md-toolbar {
 .geocore-btn {
   padding: 8px !important;
 }
+
+.MuiDialog-root {
+  .MuiDialogTitle-root {
+    padding: 0.5em;
+  }
+
+  .MuiDialogContent-root {
+    padding: 0.5rem;
+  }
+}

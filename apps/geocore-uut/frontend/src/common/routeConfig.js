@@ -1,9 +1,10 @@
 import { App } from '../features/home';
 import { PageNotFound } from '../features/common';
+import _ from 'lodash';
 import homeRoute from '../features/home/route';
 import commonRoute from '../features/common/route';
-import _ from 'lodash';
 import authenticationRoute from '../features/authentication/route';
+import uutRoute from '../features/uut/route';
 
 
 // NOTE: DO NOT CHANGE the 'childRoutes' name and the declaration pattern.
@@ -12,6 +13,7 @@ const childRoutes = [
   homeRoute,
   commonRoute,
   authenticationRoute,
+  uutRoute,
 ];
 
 

@@ -6,9 +6,12 @@
 @import 'ui/ui';
 
 @import 'libs/material-ui',
-        'libs/rc-tree'
+        'libs/rc-tree',
+        'libs/dropdown-tree-select',
+        'libs/material-ui-file-dropzone'
 ;
 
 @import '../features/home/style';
 @import '../features/common/style';
 @import '../features/authentication/style';
+@import '../features/uut/style';

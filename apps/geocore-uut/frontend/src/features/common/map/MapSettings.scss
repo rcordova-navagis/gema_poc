@@ -1,0 +1,35 @@
+@import '../../../styles/mixins';
+
+.common-map-map-settings {
+
+}
+
+.common-map-map-settings-content {
+  padding: 8px;
+
+  > section {
+
+  }
+}
+
+#map-settings-popover {
+  > .MuiPopover-paper {
+    height: fit-content;
+    overflow: hidden;
+    padding: 12px 8px;
+
+    h3 {
+      margin: 0 0 12px 0;
+    }
+  }
+}
+
+#geocore-map-settings-btn {
+  position: absolute;
+  top: 65px;
+  right: 12px;
+  z-index: 102;
+  background-color: white;
+  border-radius: 6px;
+  padding: 8px 12px !important;
+}

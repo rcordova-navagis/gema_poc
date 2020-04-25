@@ -1,7 +1,7 @@
 import React from 'react';
 import DeckGL from 'deck.gl';
 
-// const DeckGLComponent = (props) => <DeckGL viewState={props.viewport}
+// const DeckGLComponent = (props) => <DeckGL viewState={props.mapViewport}
 //                                            layers={props.layers}
 //                                    />;
 
@@ -9,7 +9,8 @@ const LayerOverlayManager = (props) => {
     console.log('MapboxLayerOverlayManager: ',props);
 
     return (
-        <DeckGL viewState={props.config.mapViewport}
+        <DeckGL initialViewState={props.config.mapViewport}
+                viewState={props.config.mapViewport}
                 layers={props.layers}
         />
     );

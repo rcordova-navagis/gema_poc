@@ -2,19 +2,18 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   CONFIG_SWITCH_MAP_DRIVER,
-  GMAP_DRIVER,
-  MAPBOX_DRIVER
 } from './constants';
 
-export function switchMapDriver() {
+export function switchMapDriver(driver) {
   return {
     type: CONFIG_SWITCH_MAP_DRIVER,
+    mapDriver: driver,
   };
 }
 
 export function useSwitchMapDriver() {
   const dispatch = useDispatch();
-  const boundAction = useCallback((...params) => dispatch(switchMapDriver(...params)), [dispatch]);
+  const boundAction = useCallback((driver) => dispatch(switchMapDriver(driver)), [dispatch]);
   return { switchMapDriver: boundAction };
 }
 
@@ -23,7 +22,7 @@ export function reducer(state, action) {
     case CONFIG_SWITCH_MAP_DRIVER:
       return {
         ...state,
-        MAP_DRIVER: state.MAP_DRIVER === GMAP_DRIVER ? MAPBOX_DRIVER : GMAP_DRIVER,
+        MAP_DRIVER: action.mapDriver,
       };
 
     default:

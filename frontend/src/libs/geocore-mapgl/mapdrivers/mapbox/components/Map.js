@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import ReactMapGL   from 'react-map-gl';
+import ReactMapGL from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 
@@ -13,7 +13,7 @@ export default function Map (props) {
     }, [_onViewportChange]);
 
     return <ReactMapGL
-        {...viewport}
+                {...viewport}
                 onViewportChange={_setViewport}
                 width="100%"
                 height="100%"

@@ -1,0 +1,27 @@
+@import '../../styles/mixins';
+
+
+.uut-uut-dashboard {
+  display: flex;
+  flex: 1;
+
+  .uut-uut-dashboard-grid {
+    flex: 1;
+    min-height: 100%;
+    height: 100%;
+
+    .uut-uut-dashboard-grid-item {
+      padding: 6px;
+
+      &:nth-of-type(2) {
+        padding: 6px 6px 6px 3px;
+      }
+
+      .uut-uut-dashboard-item-content {
+        width: 100%;
+        //background-color: #ecf0f1;
+      }
+    }
+  }
+
+}
