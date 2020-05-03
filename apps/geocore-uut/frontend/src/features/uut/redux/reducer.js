@@ -9,10 +9,12 @@
 import initialState from './initialState';
 import { reducer as saveLayerReducer } from './saveLayer';
 import { reducer as getUutLayersReducer } from './getUutLayers';
+import { reducer as saveCategoryReducer } from './saveCategory';
 
 const reducers = [
   saveLayerReducer,
   getUutLayersReducer,
+  saveCategoryReducer,
 ];
 
 export default function reducer(state = initialState, action) {

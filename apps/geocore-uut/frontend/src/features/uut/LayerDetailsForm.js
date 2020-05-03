@@ -1,41 +1,33 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Grid, TextField} from '@material-ui/core';
 import DropdownTreeSelect from 'react-dropdown-tree-select';
+import {updateTreeNode} from './../../libs/geocore-common';
+import {isEmpty} from 'underscore';
 
-
-const data = {
-    label: 'Technology',
-    value: 'technology',
-    children: [
-        {
-            label: 'LTE',
-            value: 'lte',
-        },
-        {
-            label: 'GPON',
-            value: 'gpon',
-        },
-        {
-            label: 'Wireline',
-            value: 'wireline',
-            children: [
-                {
-                    label: 'SAT Wireline',
-                    value: 'sat_wireline',
-                },
-                {
-                    label: 'Another Wireline',
-                    value: 'ano_wireline',
-                },
-            ],
-        },
-    ],
-};
 
 
 export default function LayerDetailsForm(props) {
-    const onChange = (currentNode, selectedNodes) => {
-        console.log("path::", currentNode.path);
+    const _categories = props.categories;
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        if (!isEmpty(_categories)) {
+            setCategories(_categories);
+        }
+    }, [_categories]);
+
+    const onDropdownChange = (currentNode, selectedNodes) => {
+        let newTree;
+
+        if (selectedNodes.length) {
+            newTree = updateTreeNode(categories, selectedNodes[0].id);
+            props.formik.setFieldValue('category_id', selectedNodes[0].id);
+        } else {
+            newTree = updateTreeNode(categories, null);
+            props.formik.setFieldValue('category_id', null);
+        }
+
+        setCategories(newTree);
     };
 
   return (
@@ -47,24 +39,24 @@ export default function LayerDetailsForm(props) {
               className="utt-form-grid"
         >
             <Grid item md={8}>
-                <TextField id="layer"
+                <TextField id="name"
                            label="Layer"
-                           helperText={props.formik.errors.layer ? props.formik.errors.layer : ''}
-                           error={Boolean(props.formik.errors.layer)}
+                           helperText={props.formik.errors.name ? props.formik.errors.name : ''}
+                           error={Boolean(props.formik.errors.name)}
                            onChange={props.formik.handleChange}
-                           value={props.formik.values.layer}
+                           value={props.formik.values.name}
                            fullWidth
                            required />
             </Grid>
 
             <Grid item md={8}>
-                <DropdownTreeSelect data={data}
+                <DropdownTreeSelect data={categories}
                                     texts={{ placeholder: 'Select layer category' }}
                                     mode="radioSelect"
                                     showDropdown={true}
                                     keepTreeOnSearch={true}
                                     hierarchical={true}
-                                    onChange={onChange} />
+                                    onChange={onDropdownChange} />
             </Grid>
         </Grid>
 

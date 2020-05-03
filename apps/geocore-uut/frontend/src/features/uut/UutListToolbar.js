@@ -141,7 +141,9 @@ export default function UutListToolbar(props) {
                 menuItems={[
                     {
                         label: 'Manage Layer Categories',
-                        action: props.showManageLayerCategoriesModal
+                        action: () => {
+                            props.setShowCategoriesModal(true);
+                        },
                     },
                     {
                         label: props.isListMaximize ? 'Minimize' : 'Maximize',

@@ -14,10 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf.urls import url
+from django.urls import path
 from django.http import HttpResponse
+from . import views
 
 app_name = 'layers'
 
 urlpatterns = [
-    url('', lambda request: HttpResponse("Layers Index", content_type="text/plain")),
+    url(r'categories', views.add_category, name='add_category'),
+    url(r'', views.LayersView.as_view(), name='layers')
+    # url('', lambda request: HttpResponse("Layers Index", content_type="text/plain")),
 ]

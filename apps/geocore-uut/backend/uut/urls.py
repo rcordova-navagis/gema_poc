@@ -19,12 +19,15 @@ from django.conf.urls import url
 from django.urls import include, path
 from django.http import HttpResponse
 
+UUT_API_PREFIX = 'uut/v1/'
 
 urlpatterns = [
     url(r'^tests/', lambda request: HttpResponse("Hello World", content_type="text/plain")),
 
-    path('layers/', include('layers.urls', namespace='layers')),
-    path('datasets/', include('datasets.urls', namespace='datasets'))
+    url(UUT_API_PREFIX, include([
+        path('layers', include('layers.urls', namespace='layers')),
+        path('datasets', include('datasets.urls', namespace='datasets'))
+    ]))
 ]
 
 if settings.DEBUG:

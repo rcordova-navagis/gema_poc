@@ -8,6 +8,7 @@ import {
     UutListToolbar,
     UutListView,
     UutTableView,
+    ManageLayerCategoriesDialog,
     AddLayerDialog
 } from "./index";
 
@@ -16,6 +17,8 @@ export default function UutLists(props) {
   return (
         <Paper elevation={1}
                className="uut-uut-dashboard-item-content uut-uut-list">
+
+            <ManageLayerCategoriesDialog {...props} />
 
             <AddLayerDialog {...props} />
 

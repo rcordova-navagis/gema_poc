@@ -5,7 +5,7 @@ import {useSelector} from 'react-redux';
 import {GeocoreMap, LayerOverlay} from './../../libs/geocore-mapgl';
 import LayerMenu from '../common/map/LayerMenu';
 import MapSettings from '../common/map/MapSettings';
-import {useSetMapViewport} from '../config/redux/setMapViewport';
+import {useSetMapViewport} from '../config/redux/hooks';
 import {MVTLayer} from '@deck.gl/geo-layers';
 import {GeoJsonLayer} from '@deck.gl/layers';
 

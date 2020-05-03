@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
 
+# wait for PSQL server to start
+#sleep 10
+
 if [ "$DATABASE" = "postgres" ]
 then
     echo "Waiting for postgres..."

@@ -14,10 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf.urls import url
-from django.http import HttpResponse
+from . import views
 
 app_name = 'datasets'
 
 urlpatterns = [
-    url('', lambda request: HttpResponse("Datasets Index", content_type="text/plain")),
+    url('new-dataset', views.new_dataset, name='new-dataset'),
+
+    url('', views.index, name='index')
 ]

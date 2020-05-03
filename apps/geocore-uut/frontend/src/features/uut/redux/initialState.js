@@ -10,6 +10,8 @@ const initialState = {
   saveLayerError: null,
   getUutLayersPending: false,
   getUutLayersError: null,
+  saveCategoryPending: false,
+  saveCategoryError: null,
 };
 
 export default initialState;

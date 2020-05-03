@@ -1,0 +1,2 @@
+class Raster:
+    pass

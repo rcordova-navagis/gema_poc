@@ -1,5 +1,10 @@
 @import '../../styles/mixins';
 
 .uut-uut-table-view {
+  height: inherit;
   margin: 1em 0;
+
+  .MuiTableContainer-root {
+    height: inherit;
+  }
 }

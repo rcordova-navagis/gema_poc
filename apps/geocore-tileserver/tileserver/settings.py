@@ -111,6 +111,10 @@ if DEBUG:
 #         "secret": "nP4ai27ZSBaooiUqDvfRnNCLo6VBQMtLg5xYbzXS"
 #     }
 # }
+# TILESTACHE_CACHE = {
+#     "name": "Test",
+#     "verbose": "True"
+# }
 TILESTACHE_CACHE = {
     "name": "Redis",
     "host": "geocore-redis",

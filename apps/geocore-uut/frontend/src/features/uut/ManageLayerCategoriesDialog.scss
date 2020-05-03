@@ -1,0 +1,15 @@
+@import '../../styles/mixins';
+
+.uut-manage-layer-categories-dialog {
+  .uut-add-category-btn {
+    margin: 0 0 1em 0;
+  }
+
+  .uut-new-category-actions {
+    padding: 0 0.5em 1em;
+
+    button {
+      margin: 0 0.5em;
+    }
+  }
+}

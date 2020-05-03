@@ -1,12 +1,12 @@
 export const UUT_LIST_COLUMNS = [
-    {key: 'layerName', label: 'Layer'},
+    {key: 'name', label: 'Layer'},
     {key: 'category', label: 'Category'},
     {key: 'status', label: 'Status'},
     {key: 'progress', label: 'Progress'},
 ];
 
 export const UUT_TABLE_COLUMNS = [
-    {key: 'layerName', label: 'Layer'},
+    {key: 'name', label: 'Layer'},
     {key: 'category', label: 'Category'},
     {key: 'type', label: 'Type'},
     {key: 'progress', label: 'Progress'},

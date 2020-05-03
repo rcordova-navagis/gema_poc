@@ -21,13 +21,13 @@ export default function UutListView(props) {
                 {
                     props.data.map(row => (
                         <Fragment>
-                            <ListItem alignItems="flex-start">
+                            <ListItem alignItems="flex-start" key={row.id}>
                                 <ListItemAvatar>
                                     <Avatar>{row.status.charAt(0)}</Avatar>
                                 </ListItemAvatar>
 
                                 <ListItemText
-                                    primary={row.layerName}
+                                    primary={row.name}
                                     secondary={
                                         <React.Fragment>
                                             <Typography
@@ -35,12 +35,12 @@ export default function UutListView(props) {
                                                 variant="body2"
                                                 color="textPrimary"
                                             >
-                                                {row.category}
+                                                {row.category && row.category.name}
                                             </Typography>
 
                                             <Chip color="primary"
                                                 avatar={<Avatar>{row.status.charAt(0)}</Avatar>}
-                                                  label={`${row.progress}%`}
+                                                  label={ row.dataset_queue ? `${row.dataset_queue.progress}%` : '0'}
                                             />
                                         </React.Fragment>
                                     }

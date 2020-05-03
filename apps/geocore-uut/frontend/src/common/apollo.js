@@ -6,7 +6,7 @@ import {split} from 'apollo-link';
 import {HttpLink} from 'apollo-link-http';
 import {getMainDefinition} from 'apollo-utilities';
 
-const GRAPHQL_URL = `${CONFIG.API_BASE_URL}:${CONFIG.GRAPHQL_PORT}/v1/graphql`;
+const GRAPHQL_URL = `${CONFIG.GRAPHQL_HOST}:${CONFIG.GRAPHQL_PORT}/v1/graphql`;
 
 console.log('GRAPHQL_URL: ', GRAPHQL_URL);
 
@@ -43,9 +43,4 @@ const client = new ApolloClient({
     cache: new InMemoryCache()
 });
 
-// const client = new ApolloClient({
-//     uri: `http://${GRAPHQL_URL}`,
-//     // cache: new InMemoryCache(),
-// });
-
-export default client;
+export default client; 

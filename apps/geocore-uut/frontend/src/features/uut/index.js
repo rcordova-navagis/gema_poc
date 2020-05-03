@@ -8,3 +8,6 @@ export { default as LayerDetailsForm } from './LayerDetailsForm';
 export { default as LayerDetailsUpload } from './LayerFileUpload';
 export { default as UutTableView } from './UutTableView';
 export { default as UutListView } from './UutListView';
+export { default as ManageLayerCategoriesDialog } from './ManageLayerCategoriesDialog';
+export { default as LayerCategoryTree } from './LayerCategoryTree';
+export { default as LayerCategoryForm } from './LayerCategoryForm';

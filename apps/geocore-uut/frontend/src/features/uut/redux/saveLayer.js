@@ -4,34 +4,31 @@ import {
   UUT_SAVE_LAYER_BEGIN,
   UUT_SAVE_LAYER_SUCCESS,
   UUT_SAVE_LAYER_FAILURE,
-  UUT_SAVE_LAYER_DISMISS_ERROR,
+  UUT_SAVE_LAYER_DISMISS_ERROR
 } from './constants';
+import ApiService from "../../common/services/ApiService";
 
-export function saveLayer(args = {}) {
+export function saveLayer(data = {}) {
   return (dispatch) => { // optionally you can have getState as the second argument
     dispatch({
       type: UUT_SAVE_LAYER_BEGIN,
     });
 
     const promise = new Promise((resolve, reject) => {
-      const doRequest = args.error ? Promise.reject(new Error()) : Promise.resolve();
-      doRequest.then(
-        (res) => {
-          dispatch({
-            type: UUT_SAVE_LAYER_SUCCESS,
-            data: res,
+      ApiService.saveLayer(data)
+          .then(res => {
+            dispatch({
+              type: UUT_SAVE_LAYER_SUCCESS,
+              data: res,
+            });
+            resolve(res);
+          }, err => {
+            dispatch({
+              type: UUT_SAVE_LAYER_FAILURE,
+              data: { error: err },
+            });
+            reject(err);
           });
-          resolve(res);
-        },
-        // Use rejectHandler as the second argument so that render errors won't be caught.
-        (err) => {
-          dispatch({
-            type: UUT_SAVE_LAYER_FAILURE,
-            data: { error: err },
-          });
-          reject(err);
-        },
-      );
     });
 
     return promise;
@@ -89,6 +86,7 @@ export function reducer(state, action) {
       // The request is success
       return {
         ...state,
+        saveLayerSuccess: true,
         saveLayerPending: false,
         saveLayerError: null,
       };

@@ -22,6 +22,20 @@ export default class ApiService {
         });
     }
 
+    static saveLayerCategory(name, parentId = null) {
+        return new Promise((resolve, reject) => {
+            axios.post(`${UUT_LAYERS_URL}/categories`, {name: name, parentId: parentId})
+                .then(
+                    res => {
+                        resolve(res.data);
+                    },
+                    error => {
+                        reject(error);
+                    }
+                );
+        });
+    }
+
     static saveLayer(data) {
         return new Promise((resolve, reject) => {
             axios.post(UUT_LAYERS_URL, data)

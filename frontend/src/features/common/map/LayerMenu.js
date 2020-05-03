@@ -91,7 +91,22 @@ export default class LayerMenu extends Component {
       ],
   };
 
-  onExpand(expandedKeys) {
+  componentWillReceiveProps(nextProps) {
+      console.log('componentWillReceiveProps layermenu: ',nextProps);
+      if (Array.isArray(nextProps.layersHierarchy) && nextProps.layersHierarchy.length) {
+          this.setState({
+                treeData: nextProps.layersHierarchy.map(item => {
+                    return {
+                        key: item.id,
+                        name: item.name,
+                        disableCheckbox: false,
+                    }
+                })
+          })
+      }
+  }
+
+    onExpand(expandedKeys) {
       console.log('onExpand', expandedKeys);
 
       // if not set autoExpandParent to false, if children expanded, parent can not collapse.
@@ -103,6 +118,8 @@ export default class LayerMenu extends Component {
 
   onCheck(checkedKeys) {
       console.log('onCheck: ', checkedKeys);
+
+      this.props.toggleMapLayers(checkedKeys);
 
       this.setState({
           checkedKeys,
