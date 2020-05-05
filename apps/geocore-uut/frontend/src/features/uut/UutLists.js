@@ -29,7 +29,7 @@ export default function UutLists(props) {
             <Container className="uut-uut-list-container">
                 {
                     props.isListMaximize
-                    ? <UutTableView data={props.data} />
+                    ? <UutTableView data={props.data} showLayerDetails={props.showLayerDetails} setIsListMaximize={props.setIsListMaximize} deleteLayer={props.deleteLayer} />
                     : <UutListView data={props.data} />
                 }
             </Container>

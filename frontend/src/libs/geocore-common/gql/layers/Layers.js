@@ -8,6 +8,7 @@ const layersSubscription = gql`
             name
             type
             status
+            category_id
             category {
                 id
                 name

@@ -1,0 +1,11 @@
+@import '../../styles/mixins';
+
+.uut-dataset-map {
+  display: flex;
+  flex: 1;
+
+  #geocore-gmap {
+    display: flex;
+    flex: 1;
+  }
+}

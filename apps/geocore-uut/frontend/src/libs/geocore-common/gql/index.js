@@ -1,7 +1,10 @@
 import {layerCategoriesSubscription} from './layers/Categories';
-import {layerDatasetsSubscription} from './layers/Layers';
+import {layerDatasetsSubscription, getlayerDetailsQuery, deleteLayerAndDatasets} from './layers/Layers';
+
 
 export {
     layerCategoriesSubscription,
-    layerDatasetsSubscription
+    layerDatasetsSubscription,
+    getlayerDetailsQuery,
+    deleteLayerAndDatasets
 };

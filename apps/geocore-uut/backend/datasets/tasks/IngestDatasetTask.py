@@ -3,6 +3,7 @@ from libs.geocore_cartutil import ProcessDataset
 from django.conf import settings
 from django_tilestache.models import Layer
 from ..models import Datasets, DatasetQueues
+from django.db import connection
 
 
 PROJECTION_SPHERICAL_MERCATOR = '900913'
@@ -50,6 +51,23 @@ class IngestDatasetTask:
         if dsq:
             dsq.progress = 100
             dsq.save()
+
+            cursor = connection.cursor()
+            update_tbl_query = """
+                ALTER TABLE IF EXISTS {dataset_queue_name} 
+                ADD COLUMN dataset_queue_id INTEGER REFERENCES dataset_queues(id)
+            """.format(dataset_queue_name=dataset_queue_name)
+            print(update_tbl_query)
+            cursor.execute(update_tbl_query)
+            insert_query = """
+                INSERT INTO dataset_data("dataset_id", "row_no", "data_pk", "data", "geom")
+                SELECT {dataset_id}, t.ogc_fid, t.ogc_fid, row_to_json(t), t.geom
+                FROM (
+                    SELECT * FROM {dataset_queue_name}
+                ) t
+            """.format(dataset_id=dataset_id, dataset_queue_name=dataset_queue_name)
+            cursor.execute(insert_query)
+
 
         # determine what type of datasource. csv,xlsx,shape,kml,kmz,etc..
             # get the appropriate driver

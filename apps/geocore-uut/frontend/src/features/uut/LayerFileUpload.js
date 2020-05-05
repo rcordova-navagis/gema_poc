@@ -14,6 +14,8 @@ export default function LayerFileUpload(props) {
         <section className="uut-layer-file-upload-content">
             <DropzoneArea
                 // acceptedFiles={UUT_ACCEPTED_FILETYPES}
+                // acceptedFiles={["*/*"]}
+                filesLimit={1}
                 dropzoneClass="geocore-file-dropzone"
                 showFileNamesInPreview={true}
                 useChipsForPreview={true}

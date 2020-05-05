@@ -59,13 +59,20 @@ export default function UutTableView(props) {
                                 <TableCell component="td">{row.dataset && row.dataset.dataset_queue.uploaded_by}</TableCell>
                                 <TableCell component="td">{row.dataset && row.dataset.dataset_queue.progress >= 0 ? (row.dataset.dataset_queue.progress < 100 ? 'In Progress' : 'Completed') : 'No Dataset'}</TableCell>
                                 <TableCell component="td">
-                                    <IconButton color="secondary">
+                                    <IconButton color="secondary"
+                                                onClick={() => {
+                                                    props.deleteLayer(row.id, row.dataset.id, row.dataset.dataset_queue.id);
+                                                }}
+                                    >
                                         <DeleteIcon />
                                     </IconButton>
 
                                     {
                                         row.dataset && row.dataset.dataset_queue.progress && row.dataset.dataset_queue.progress == 100
-                                        ? <IconButton color="primary">
+                                        ? <IconButton color="primary" onClick={() => {
+                                                props.showLayerDetails(row.id);
+                                                props.setIsListMaximize(false);
+                                            }}>
                                                 <VisibilityIcon />
                                             </IconButton>
                                         : null

@@ -7,14 +7,18 @@
 // https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da.
 
 import initialState from './initialState';
-import { reducer as saveLayerReducer } from './saveLayer';
 import { reducer as getUutLayersReducer } from './getUutLayers';
 import { reducer as saveCategoryReducer } from './saveCategory';
+import { reducer as showLayerDetailsReducer } from './showLayerDetails';
+import { reducer as saveLayerReducer } from './saveLayer';
+import { reducer as deleteLayerReducer } from './deleteLayer';
 
 const reducers = [
-  saveLayerReducer,
   getUutLayersReducer,
   saveCategoryReducer,
+  showLayerDetailsReducer,
+  saveLayerReducer,
+  deleteLayerReducer,
 ];
 
 export default function reducer(state = initialState, action) {

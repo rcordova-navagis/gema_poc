@@ -8,6 +8,7 @@ import {
 } from './constants';
 import ApiService from "../../common/services/ApiService";
 
+
 export function saveLayer(data = {}) {
   return (dispatch) => { // optionally you can have getState as the second argument
     dispatch({
@@ -45,11 +46,11 @@ export function useSaveLayer(params) {
   const dispatch = useDispatch();
 
   const { saveLayerPending, saveLayerError } = useSelector(
-    state => ({
-      saveLayerPending: state.uut.saveLayerPending,
-      saveLayerError: state.uut.saveLayerError,
-    }),
-    shallowEqual,
+      state => ({
+        saveLayerPending: state.uut.saveLayerPending,
+        saveLayerError: state.uut.saveLayerError,
+      }),
+      shallowEqual,
   );
 
   const boundAction = useCallback((...args) => {

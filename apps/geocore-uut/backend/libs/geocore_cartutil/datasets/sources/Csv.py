@@ -32,9 +32,9 @@ class Csv:
     def get_geom_columns(self, cleaned_cols_dict):
         geom_cols = {'LATITUDE': None, 'LONGITUDE': None}
         for raw_col, cleaned_col in cleaned_cols_dict.items():
-            if cleaned_col in LATITUDE_NAMES:
+            if cleaned_col.lower() in LATITUDE_NAMES:
                 geom_cols['LATITUDE'] = cleaned_col
-            elif cleaned_col in LONGITUDE_NAMES:
+            elif cleaned_col.lower() in LONGITUDE_NAMES:
                 geom_cols['LONGITUDE'] = cleaned_col
         return geom_cols
 
@@ -81,7 +81,7 @@ class Csv:
         os.system(ogr_cmd)
 
     def ingest(self):
-        df = pd.read_csv(self.sourcefilepath)
+        df = pd.read_csv(self.sourcefilepath, engine='python')
         # TODO: add method to check geom type, right now csv is fixed for Point
 
         # save this to dataset_columns

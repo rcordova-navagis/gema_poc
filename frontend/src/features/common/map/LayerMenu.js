@@ -66,49 +66,41 @@ export default class LayerMenu extends Component {
       expandedKeys: [],
       checkedKeys: [],
       treeData: [
-          {
-              key: 'parent-1',
-              name: 'Parent 1',
-              disableCheckbox: false,
-              children: [
-                  {
-                      key: 'child-1',
-                      name: 'Child 1',
-                      disableCheckbox: false,
-                  },
-                  {
-                      key: 'child-2',
-                      name: 'Child 2',
-                      disableCheckbox: false,
-                  }
-              ]
-          },
-          {
-              key: 'parent-2',
-              name: 'Parent 2 (no child)',
-              disableCheckbox: false,
-          },
+          // {
+          //     key: 'parent-1',
+          //     name: 'Parent 1',
+          //     disableCheckbox: false,
+          //     children: [
+          //         {
+          //             key: 'child-1',
+          //             name: 'Child 1',
+          //             disableCheckbox: false,
+          //         },
+          //         {
+          //             key: 'child-2',
+          //             name: 'Child 2',
+          //             disableCheckbox: false,
+          //         }
+          //     ]
+          // },
+          // {
+          //     key: 'parent-2',
+          //     name: 'Parent 2 (no child)',
+          //     disableCheckbox: false,
+          // },
       ],
   };
 
   componentWillReceiveProps(nextProps) {
-      console.log('componentWillReceiveProps layermenu: ',nextProps);
       if (Array.isArray(nextProps.layersHierarchy) && nextProps.layersHierarchy.length) {
           this.setState({
-                treeData: nextProps.layersHierarchy.map(item => {
-                    return {
-                        key: item.id,
-                        name: item.name,
-                        disableCheckbox: false,
-                    }
-                })
+            treeData: nextProps.layersHierarchy
           })
       }
   }
 
     onExpand(expandedKeys) {
       console.log('onExpand', expandedKeys);
-
       // if not set autoExpandParent to false, if children expanded, parent can not collapse.
       // or, you can remove all expanded chilren keys.
       this.setState({

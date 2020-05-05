@@ -76,10 +76,9 @@ function MapIndex (props) {
     }, []);
 
     const {data: layersData, loading, error} = useSubscription(layersSubscription);
-    // const {data: categoryData, loading: loadingLayerCategories, error: errorLayerCategories} = useSubscription(layerCategoriesSubscription);
+    const {data: categoryData, loading: loadingLayerCategories, error: errorLayerCategories} = useSubscription(layerCategoriesSubscription);
 
     useEffect(() => {
-        console.log('layersData: ',layersData);
         if (layersData && layersData.layers) {
             setTilestacheLayers(layersData.layers.filter(layer => {
                 return layer.dataset && layer.dataset.django_tilestache_layer;
@@ -96,7 +95,6 @@ function MapIndex (props) {
                     visible: false,
                 });
             }));
-            setLayersHierarchy(layersData.layers);
             // setTilestacheLayers([
             //     new MVTLayer({
             //         data: `${CONFIG.TILESTACHE_BASE_URL}/osmpoints/{z}/{x}/{y}.pbf`,
@@ -112,16 +110,34 @@ function MapIndex (props) {
     }, [layersData]);
 
     useEffect(() => {
-        console.log('checkedLayers changed: ',checkedLayers);
-        // if (Array.isArray(tilestacheLayers) && tilestacheLayers.length) {
-        setTilestacheLayers( t => t.map(layer => {
-                layer.visible = checkedLayers.includes(layer.id);
-                return layer;
-            })
-        );
+        if (categoryData && Array.isArray(categoryData.categories) && layersData.layers && Array.isArray(layersData.layers)) {
+            let hierarchy = CategoriesTransformer.transformLayerHierarchy(layersData.layers, categoryData.categories);
+            // let hierarchy = CategoriesTransformer.transformToDropdownTreeSelect(categoryData.categories);
+            // console.log('hiearchy: ',hierarchy);
+            setLayersHierarchy(hierarchy);
+        }
+    }, [layersData, categoryData]);
 
-        // }
-    }, [checkedLayers]);
+    useEffect(() => {
+        if (layersData && layersData.layers && checkedLayers) {
+            setTilestacheLayers(layersData.layers.filter(layer => {
+                return layer.dataset && layer.dataset.django_tilestache_layer;
+            }).map(layer => {
+                return new MVTLayer({
+                    id: layer.id,
+                    data: `${CONFIG.TILESTACHE_BASE_URL}/${layer.dataset.django_tilestache_layer.name}/{z}/{x}/{y}.pbf`,
+                    pickable: false,
+                    filled: true,
+                    getFillColor: [200, 0, 0],
+                    getRadius: 20,
+                    pointRadiusMinPixels: 4,
+                    pointRadiusMaxPixels: 4,
+                    visible: checkedLayers.includes(String(layer.id)),
+                });
+            }));
+        }
+    }, [checkedLayers, layersData]);
+
 
     useEffect(function() {
         return function cleanup() {
@@ -132,8 +148,6 @@ function MapIndex (props) {
             setMapLoaded(false);
         }
     }, []);
-
-    console.log('tilestache laeyrs ',tilestacheLayers);
 
     return (
       <div className="home-map-index">

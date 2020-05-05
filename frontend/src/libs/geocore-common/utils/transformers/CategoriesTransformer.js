@@ -85,4 +85,48 @@ export default class CategoriesTransformer
         };
         return CategoriesTransformer.transformCategoryDataWithCallback(data, transformItem);
     }
+
+    static addLayerToCategory(category, layers) {
+        let layersInCategory = _.where(layers, {category_id: category.id});
+
+        if (layersInCategory.length) {
+            if (!Array.isArray(category.children)) category.children = [];
+
+            category.children = category.children.concat(layersInCategory.map(item => {
+                item.key = item.id;
+                item.label = item.name;
+                return item;
+            }));
+        }
+    }
+
+    static assignLayer(category, layers) {
+        if (Array.isArray(category.children) && category.children.length) {
+            category.children.forEach(categoryChild => {
+                CategoriesTransformer.addLayerToCategory(categoryChild, layers);
+                CategoriesTransformer.assignLayer(categoryChild, layers);
+            });
+        } else {
+            CategoriesTransformer.addLayerToCategory(category, layers);
+        }
+    }
+
+    static transformLayerHierarchy(layers, categories) {
+        const transformItem = (item) => {
+            item.key = item.id;
+            item.value = item.id;
+            item.label = item.name;
+            item.disableCheckbox = false;
+            return item;
+        };
+
+        let categoryHiearchy = CategoriesTransformer.transformCategoryDataWithCallback(categories, transformItem);
+
+        categoryHiearchy.forEach(category => {
+            CategoriesTransformer.addLayerToCategory(category, layers);
+            CategoriesTransformer.assignLayer(category, layers);
+        });
+
+        return categoryHiearchy;
+    }
 }

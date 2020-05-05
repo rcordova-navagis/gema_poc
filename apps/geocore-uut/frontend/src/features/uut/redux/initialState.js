@@ -6,12 +6,14 @@
 
 // NOTE: initialState constant is necessary so that Rekit could auto add initial state when creating async actions.
 const initialState = {
-  saveLayerPending: false,
-  saveLayerError: null,
   getUutLayersPending: false,
   getUutLayersError: null,
   saveCategoryPending: false,
   saveCategoryError: null,
+  saveLayerPending: false,
+  saveLayerError: null,
+  deleteLayerPending: false,
+  deleteLayerError: null,
 };
 
 export default initialState;

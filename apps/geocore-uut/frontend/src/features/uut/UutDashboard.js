@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {Grid} from '@material-ui/core';
 import {UutListItemDetails, UutLists} from "./index";
-import {useGetUutLayers} from './redux/getUutLayers';
+import {
+    useGetUutLayers,
+    useShowLayerDetails,
+    useDeleteLayer
+} from './redux/hooks';
 import {useSubscription} from '@apollo/react-hooks/lib/useSubscription';
 import {CategoriesTransformer} from './../../libs/geocore-common';
 import {layerCategoriesSubscription, layerDatasetsSubscription} from './../../libs/geocore-common/gql';
@@ -32,6 +36,9 @@ export default function UutDashboard(props) {
   const [categories, setCategories] = useState([]);
   const [layerQueues, setLayerQueues] = useState([]);
   const saveLayerSuccess = useSelector(state => state.uut.saveLayerSuccess);
+  const layerIdDetailsToShow = useSelector(state => state.uut.layerIdDetailsToShow);
+  const {showLayerDetails} = useShowLayerDetails();
+  const {deleteLayer} = useDeleteLayer();
 
   const {getUutLayers} = useGetUutLayers();
   const {data: layerQueueData, loading, error} = useSubscription(layerDatasetsSubscription);
@@ -81,6 +88,8 @@ export default function UutDashboard(props) {
                     showAddLayerModal={showAddLayerModal}
                     setShowCategoriesModal={setShowCategoriesModal}
                     showCategoriesModal={showCategoriesModal}
+                    showLayerDetails={showLayerDetails}
+                    deleteLayer={deleteLayer}
                 />
             </Grid>
 
@@ -92,7 +101,7 @@ export default function UutDashboard(props) {
                           md={9}
                           className="uut-uut-dashboard-grid-item"
                     >
-                        <UutListItemDetails />
+                        {layerIdDetailsToShow ? <UutListItemDetails layerIdDetailsToShow={layerIdDetailsToShow} /> : null}
                     </Grid>
             }
 
