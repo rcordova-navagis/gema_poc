@@ -152,3 +152,15 @@ BROKER_URL = 'amqp://{user}:{password}@{hostname}/{vhost}/'.format(
 )
 CELERY_RESULT_BACKEND = 'rpc://'
 CELERY_TIMEZONE = TIME_ZONE
+
+# TILESTACHE_CACHE = {
+#     "name": "Test",
+#     "verbose": "True"
+# }
+TILESTACHE_CACHE = {
+    "name": "Redis",
+    "host": "geocore-redis",
+    "port": 6379,
+    "db": 0,
+    "key prefix": "geocore"
+}

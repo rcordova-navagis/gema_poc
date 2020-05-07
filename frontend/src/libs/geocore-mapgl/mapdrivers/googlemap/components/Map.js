@@ -2,7 +2,6 @@
 
 import React, {Component, useState, useCallback} from 'react';
 import {GoogleMap, useLoadScript} from '@react-google-maps/api';
-import { throttle, functions, isEqual, omit } from 'underscore';
 
 
 let _center,
@@ -70,16 +69,4 @@ function Map (props) {
     );
 }
 
-// function shouldNotUpdate(props, nextProps) {
-//     const [funcs, nextFuncs] = [functions(props), functions(nextProps)];
-//     const noPropChange = isEqual(omit(props, funcs), omit(nextProps, nextFuncs));
-//     // const noFuncChange =
-//     //     funcs.length === nextFuncs.length &&
-//     //     funcs.every(fn => props[fn].toString() === nextProps[fn].toString());
-//     // return noPropChange && noFuncChange
-//
-//     return noPropChange;
-// }
-
-// export default React.memo(Map, shouldNotUpdate);
 export default Map;

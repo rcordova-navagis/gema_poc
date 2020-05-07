@@ -21,6 +21,6 @@ from . import views
 
 urlpatterns = [
     url(r'^tilestache/layers/(?P<layer_name>[-\w]+)', views.CreateTileView.as_view(), name='tilestache-layer'),
-
-    url(r'^', include(django_tilestache_urls))
+    url(r'^tilestache/seed/(?P<layer_name>[-\w]+)', views.SeedLayerView.as_view(), name='tilestache-seed-layer'),
+    url(r'^', include(django_tilestache_urls)),
 ]

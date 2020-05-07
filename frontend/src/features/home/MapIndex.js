@@ -14,7 +14,7 @@ import {CategoriesTransformer} from "./../../libs/geocore-common/utils";
 import {useToggleMapLayers} from "../common/redux/hooks";
 
 
-const _mapOptions = {};
+const _mapOptions = {zoom: 3};
 // let _layerManager;
 
 const layers = [
@@ -161,7 +161,7 @@ function MapIndex (props) {
             config={config}
             mapOptions={_mapOptions}
         >
-            <LayerOverlay config={config} layers={tilestacheLayers} ref={mapRef} />
+            <LayerOverlay config={config} layers={layers} ref={mapRef} />
         </GeocoreMap>
       </div>
     );

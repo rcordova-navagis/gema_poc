@@ -10,9 +10,6 @@ PROJECTION_SPHERICAL_MERCATOR = '900913'
 
 
 class IngestDatasetTask:
-    def __init__(self):
-        pass
-
     @task(bind=True)
     def get_task(self, dataset_id, dataset_queue_id, dataset_queue_name, sourcefilepath):
         print("Starting IngestDatasetTask source_filepath={sourcefilepath} dataset_id={dataset_id} dataset_queue_name={dataset_queue_name} dataset_queue_id={dataset_queue_id}".format(sourcefilepath=sourcefilepath, dataset_id=dataset_id, dataset_queue_name=dataset_queue_name, dataset_queue_id=dataset_queue_id))

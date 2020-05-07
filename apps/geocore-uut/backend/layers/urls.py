@@ -21,6 +21,8 @@ from . import views
 app_name = 'layers'
 
 urlpatterns = [
+    url(r'tilestache/seed/(?P<layer_name>[-\w]+)', views.SeedLayerView.as_view(), name='tilestache-seed-layer'),
+
     url(r'categories', views.add_category, name='add_category'),
     url(r'', views.LayersView.as_view(), name='layers')
     # url('', lambda request: HttpResponse("Layers Index", content_type="text/plain")),
