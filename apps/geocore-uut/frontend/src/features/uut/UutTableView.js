@@ -9,9 +9,11 @@ import {
     TablePagination,
     Paper,
     IconButton,
+    Tooltip,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import {UUT_TABLE_COLUMNS} from './constants/UutSchema';
 import _ from 'underscore';
 
@@ -52,29 +54,44 @@ export default function UutTableView(props) {
                             <TableRow key={row.id}>
                                 <TableCell component="td">{row.name}</TableCell>
                                 <TableCell component="td">{row.category && row.category.name}</TableCell>
-                                <TableCell component="td">CSV | Point</TableCell>
+                                <TableCell component="td">{row.dataset ? 'CSV | Point' : ''}</TableCell>
                                 <TableCell component="td">{row.dataset && row.dataset.dataset_queue.progress}</TableCell>
                                 <TableCell component="td"></TableCell>
                                 <TableCell component="td">{row.published_date}</TableCell>
                                 <TableCell component="td">{row.dataset && row.dataset.dataset_queue.uploaded_by}</TableCell>
                                 <TableCell component="td">{row.dataset && row.dataset.dataset_queue.progress >= 0 ? (row.dataset.dataset_queue.progress < 100 ? 'In Progress' : 'Completed') : 'No Dataset'}</TableCell>
                                 <TableCell component="td">
-                                    <IconButton color="secondary"
-                                                onClick={() => {
-                                                    props.deleteLayer(row.id, row.dataset.id, row.dataset.dataset_queue.id);
-                                                }}
-                                    >
-                                        <DeleteIcon />
-                                    </IconButton>
+                                    <Tooltip title="Import Datasource" placement="top">
+                                        <IconButton color="default"
+                                                    onClick={() => {
+                                                        props.toggleDatasourceDialog(true, row.id);
+                                                        // props.importDatasource(row.id, row.dataset.id, row.dataset.dataset_queue.id);
+                                                    }}
+                                        >
+                                            <InsertDriveFileIcon />
+                                        </IconButton>
+                                    </Tooltip>
+
+                                    <Tooltip title="Delete Layer" placement="top">
+                                        <IconButton color="secondary"
+                                                    onClick={() => {
+                                                        props.deleteLayer(row.id, row.dataset.id, row.dataset.dataset_queue.id);
+                                                    }}
+                                        >
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </Tooltip>
 
                                     {
                                         row.dataset && row.dataset.dataset_queue.progress && row.dataset.dataset_queue.progress == 100
-                                        ? <IconButton color="primary" onClick={() => {
-                                                props.showLayerDetails(row.id);
-                                                props.setIsListMaximize(false);
-                                            }}>
-                                                <VisibilityIcon />
-                                            </IconButton>
+                                        ?   <Tooltip title="View Layer" placement="top">
+                                                <IconButton color="primary" onClick={() => {
+                                                    props.showLayerDetails(row.id);
+                                                    props.setIsListMaximize(false);
+                                                }}>
+                                                    <VisibilityIcon />
+                                                </IconButton>
+                                            </Tooltip>
                                         : null
                                     }
                                 </TableCell>

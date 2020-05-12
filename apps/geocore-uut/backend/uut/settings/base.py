@@ -144,6 +144,42 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 MEDIA_URL = '/media/'
 
+LOG_DIR = os.path.join(PROJECT_ROOT, 'logs')
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+        },
+        'uut': {
+            'level': 'WARN',
+            'class': 'logging.FileHandler',
+            'filename': 'uut.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers':  ['console'],
+            'level': 'INFO',
+            'formatter': 'verbose',
+            'propagate': True,
+        },
+        'uut': {
+            'handlers': ['console', 'uut'],
+            'level': 'WARN',
+            'formatter': 'verbose',
+            'propagate': True,
+        },
+    },
+}
+
 BROKER_URL = 'amqp://{user}:{password}@{hostname}/{vhost}/'.format(
     user=os.environ.get('RABBITMQ_DEFAULT_USER', 'guest'),
     password=os.environ.get('RABBITMQ_DEFAULT_PASS', 'guest'),

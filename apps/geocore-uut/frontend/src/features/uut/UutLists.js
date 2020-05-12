@@ -11,6 +11,7 @@ import {
     ManageLayerCategoriesDialog,
     AddLayerDialog
 } from "./index";
+import {DatasourceDialog} from "../datasource/index";
 
 
 export default function UutLists(props) {
@@ -22,6 +23,9 @@ export default function UutLists(props) {
 
             <AddLayerDialog {...props} />
 
+            <DatasourceDialog showDatasourceDialog={props.showDatasourceDialog}
+                              toggleDatasourceDialog={props.toggleDatasourceDialog} />
+
             <UutListToolbar {...props} />
 
             <Divider />
@@ -29,7 +33,11 @@ export default function UutLists(props) {
             <Container className="uut-uut-list-container">
                 {
                     props.isListMaximize
-                    ? <UutTableView data={props.data} showLayerDetails={props.showLayerDetails} setIsListMaximize={props.setIsListMaximize} deleteLayer={props.deleteLayer} />
+                    ? <UutTableView data={props.data}
+                                    showLayerDetails={props.showLayerDetails}
+                                    setIsListMaximize={props.setIsListMaximize}
+                                    deleteLayer={props.deleteLayer}
+                                    toggleDatasourceDialog={props.toggleDatasourceDialog} />
                     : <UutListView data={props.data} />
                 }
             </Container>

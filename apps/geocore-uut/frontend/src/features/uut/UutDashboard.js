@@ -12,6 +12,7 @@ import {layerCategoriesSubscription, layerDatasetsSubscription} from './../../li
 import {useSelector} from 'react-redux';
 import * as Faker from 'faker';
 import {random} from 'underscore';
+import {useToggleDatasourceDialog} from "../datasource/redux/hooks";
 
 
 // const layerQueueData = Array(10).fill().map((_, i) => {
@@ -37,8 +38,10 @@ export default function UutDashboard(props) {
   const [layerQueues, setLayerQueues] = useState([]);
   const saveLayerSuccess = useSelector(state => state.uut.saveLayerSuccess);
   const layerIdDetailsToShow = useSelector(state => state.uut.layerIdDetailsToShow);
+  const showDatasourceDialog = useSelector(state => state.datasource.showDatasourceDialog);
   const {showLayerDetails} = useShowLayerDetails();
   const {deleteLayer} = useDeleteLayer();
+  const {toggleDatasourceDialog} = useToggleDatasourceDialog();
 
   const {getUutLayers} = useGetUutLayers();
   const {data: layerQueueData, loading, error} = useSubscription(layerDatasetsSubscription);
@@ -88,6 +91,8 @@ export default function UutDashboard(props) {
                     showAddLayerModal={showAddLayerModal}
                     setShowCategoriesModal={setShowCategoriesModal}
                     showCategoriesModal={showCategoriesModal}
+                    showDatasourceDialog={showDatasourceDialog}
+                    toggleDatasourceDialog={toggleDatasourceDialog}
                     showLayerDetails={showLayerDetails}
                     deleteLayer={deleteLayer}
                 />

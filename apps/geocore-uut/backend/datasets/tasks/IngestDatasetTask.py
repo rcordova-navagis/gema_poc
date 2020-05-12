@@ -1,3 +1,4 @@
+import os
 from celery import task
 from libs.geocore_cartutil import ProcessDataset
 from django.conf import settings
@@ -14,8 +15,19 @@ class IngestDatasetTask:
     def get_task(self, dataset_id, dataset_queue_id, dataset_queue_name, sourcefilepath):
         print("Starting IngestDatasetTask source_filepath={sourcefilepath} dataset_id={dataset_id} dataset_queue_name={dataset_queue_name} dataset_queue_id={dataset_queue_id}".format(sourcefilepath=sourcefilepath, dataset_id=dataset_id, dataset_queue_name=dataset_queue_name, dataset_queue_id=dataset_queue_id))
 
+        LOG_FILE = os.path.join(settings.LOG_DIR, "{name}.log".format(name=dataset_queue_name))
+
+        if not os.path.exists(os.path.dirname(LOG_FILE)):
+            try:
+                os.makedirs(os.path.dirname(LOG_FILE))
+            except OSError as exc: # Guard against race condition
+                pass
+
         database_dict = settings.DATABASES['default']
-        ProcessDataset(dataset_id, dataset_queue_id, dataset_queue_name, sourcefilepath, database_dict).start()
+
+        ProcessDataset(dataset_id, dataset_queue_id, dataset_queue_name, sourcefilepath, database_dict, LOG_FILE).start()
+
+        # TODO: extract below to a pubsub style when processdataset task has completed or progress = 100 then do below
 
         layer = Layer.objects.create(
             **{
@@ -39,6 +51,8 @@ class IngestDatasetTask:
             }
         )
 
+        # TODO: or extract below to csv.py
+
         ds = Datasets.objects.get(pk=dataset_id)
         if ds:
             ds.tilestache_layer_id = layer.pk
@@ -54,8 +68,14 @@ class IngestDatasetTask:
                 ALTER TABLE IF EXISTS {dataset_queue_name} 
                 ADD COLUMN dataset_queue_id INTEGER REFERENCES dataset_queues(id)
             """.format(dataset_queue_name=dataset_queue_name)
-            print(update_tbl_query)
             cursor.execute(update_tbl_query)
+
+            add_queue_id_query = """
+                UPDATE {dataset_queue_name} 
+                SET dataset_queue_id = {id} 
+            """.format(dataset_queue_name=dataset_queue_name, id=dataset_queue_id)
+            cursor.execute(add_queue_id_query)
+
             insert_query = """
                 INSERT INTO dataset_data("dataset_id", "row_no", "data_pk", "data", "geom")
                 SELECT {dataset_id}, t.ogc_fid, t.ogc_fid, row_to_json(t), t.geom

@@ -5,6 +5,9 @@ import homeRoute from '../features/home/route';
 import commonRoute from '../features/common/route';
 import authenticationRoute from '../features/authentication/route';
 import uutRoute from '../features/uut/route';
+import datasourceRoute from '../features/datasource/route';
+import layerRoute from '../features/layer/route';
+import categoryRoute from '../features/category/route';
 
 
 // NOTE: DO NOT CHANGE the 'childRoutes' name and the declaration pattern.
@@ -14,6 +17,9 @@ const childRoutes = [
   commonRoute,
   authenticationRoute,
   uutRoute,
+  datasourceRoute,
+  layerRoute,
+  categoryRoute,
 ];
 
 

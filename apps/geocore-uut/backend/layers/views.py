@@ -11,6 +11,9 @@ from .ManageLayers.CreateLayerCommand import CreateLayerCommand
 from datasets.ManageDatasets.CreateDatasetCommand import CreateDatasetCommand
 from .SeedTilestacheLayer import SeedTilestacheLayerCommand
 
+import logging
+logger = logging.getLogger('uut')
+
 
 class SeedLayerView(APIView):
     def post(self, request, layer_name):
@@ -41,7 +44,20 @@ def add_category(request):
 
 class LayersView(APIView):
     def get(self, request):
-        return HttpResponse('LAYERS GET ')
+        # logger.warning("Test!!")
+        name = request.GET['name']
+
+        fileh = logging.FileHandler("{name}.log".format(name=name), 'a')
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(message)s')
+        fileh.setFormatter(formatter)
+        log = logging.getLogger(name)
+        log.addHandler(fileh)
+
+        # log = logging.getLogger()
+        resp = "LAYERS GET name={name}".format(name=name)
+        log.warning(resp)
+        return HttpResponse(resp)
+
 
     def post(self, request):
         data = {'user_id': 2}

@@ -2,7 +2,10 @@ import os
 import pandas as pd
 import geopandas
 import stat
+import logging
 from django.utils.text import slugify
+from ...utils.PointHelper import PointHelper
+
 
 # TODO extract all this to a configuration or constants
 DEFAULT_PROJECTION = "EPSG:4326"
@@ -11,14 +14,23 @@ LONGITUDE_NAMES = ['longitude', 'lng', 'lon', 'y']
 
 
 class Csv:
-    def __init__(self, dataset_id, dataset_queue_id, dataset_queue_name, sourcefilepath, db_creds_dict):
+    def __init__(self, dataset_id, dataset_queue_id, dataset_queue_name, sourcefilepath, db_creds_dict, logfile):
         self.dataset_id = dataset_id
         self.dataset_queue_id = dataset_queue_id
         self.dataset_queue_name = dataset_queue_name
         self.sourcefilepath = sourcefilepath
         self.DB_DICT = db_creds_dict
         self.DB_CONN_STRING = self.get_db_conn_string(db_creds_dict)
+        self.logger = self.create_logger(logfile)
         print("CSV dataset_id={dataset_id}, dataset_queue_id={dataset_queue_id}, sourcefilepath={sourcefilepath} dataset_queue_name={dataset_queue_name}".format(dataset_id=dataset_id, dataset_queue_id=dataset_queue_id, sourcefilepath=sourcefilepath, dataset_queue_name=dataset_queue_name))
+
+    def create_logger(self, logfile):
+        fileh = logging.FileHandler(logfile, 'a')
+        formatter = logging.Formatter('%(asctime)s - %(name)s: %(message)s')
+        fileh.setFormatter(formatter)
+        log = logging.getLogger(self.dataset_queue_name)
+        log.addHandler(fileh)
+        return log
 
     def get_db_conn_string(self, db_creds_dict):
         return "PG:\"dbname={dbname} host={dbhost} port={dbport} user={dbuser} password={dbpassword}\"".format(dbname=db_creds_dict['NAME'], dbhost=db_creds_dict['HOST'], dbport=db_creds_dict['PORT'], dbuser=db_creds_dict['USER'], dbpassword=db_creds_dict['PASSWORD'])
@@ -61,10 +73,10 @@ class Csv:
                 <SrcDataSource relativeToVRT="1">{sourcefilename}</SrcDataSource> 
                 <GeometryField encoding="WKT" name="geom" field="geometry">
                     <GeometryType>wkbPoint</GeometryType>
-                    <SRS>EPSG:4326</SRS>
+                    <SRS>{projection}</SRS>
                 </GeometryField>
             </OGRVRTLayer> 
-        </OGRVRTDataSource>""".format(dataset_name=dataset_name, sourcefilename=sourcefilename)
+        </OGRVRTDataSource>""".format(dataset_name=dataset_name, sourcefilename=sourcefilename, projection=DEFAULT_PROJECTION)
         vrt_filepath = self.get_new_sourcefilename('.vrt', None)
         file = open(vrt_filepath, "w")
         file.write(vrt_str)
@@ -84,35 +96,45 @@ class Csv:
         df = pd.read_csv(self.sourcefilepath, engine='python')
         # TODO: add method to check geom type, right now csv is fixed for Point
 
+        # add row_no column
+        df['row_no'] = df.reset_index().index + 1
+
         # save this to dataset_columns
         raw_columns = list(df.columns)
 
         # clean headers and update csv
         cleaned_cols_dict = self.clean_columns(raw_columns)
-        # print("cleaned_cols_dict: {cleaned_cols_dict}".format(cleaned_cols_dict=cleaned_cols_dict))
 
         # rename cols from cleaned one and return new  version
         df.rename(columns=cleaned_cols_dict, inplace=True)
 
         # get lat,lng columns
         geom_cols = self.get_geom_columns(cleaned_cols_dict)
-        # print("geom_cols: {geom_cols}".format(geom_cols=geom_cols))
+        # TODO: add geom_columns to dataset_columns table
 
         if geom_cols['LATITUDE'] is None or geom_cols['LONGITUDE'] is None:
             raise Exception('No Latitude/Longitude field found on csv file.')
 
-        gdf = geopandas.GeoDataFrame(df, geometry=geopandas.points_from_xy(
-            getattr(df, geom_cols['LONGITUDE']),
-            getattr(df, geom_cols['LATITUDE'])
-        ), crs=DEFAULT_PROJECTION)
-        # print("geom type: {gtype}".format(gtype=gdf.geom_type))
+        rows_with_invalid_latlng = []
+        # add validation and log rows with issue
+        for index, row in df.iterrows():
+            validate_coords = PointHelper.validate_latlng(row[geom_cols['LATITUDE']], row[geom_cols['LONGITUDE']])
+            if validate_coords is not True:
+                message = "row={row_no} error({message})".format(row_no=row['row_no'], message=validate_coords)
+                self.logger.info(message)
+                rows_with_invalid_latlng.append(row['row_no'])
+                # TODO: insert error on dataset_queue_errors
+
+        # TODO: update  dataset_queue has_errors to true if rows_with_invalid_latlng len > 0
+
+        # create new csv
+        filtered_df = df.query('row_no not in @rows_with_invalid_latlng', inplace=False)
+        filtered_df['geometry'] = df.apply(lambda row: "POINT({lon} {lat})".format(lat=row[geom_cols['LATITUDE']], lon=row[geom_cols['LONGITUDE']]), axis=1)
 
         os.remove(self.sourcefilepath)
         new_sourcefilepath = self.sourcefilepath
-        # new_sourcefilepath = self.get_new_sourcefilename('.csv')
-        # print("new_sourcefilepath: {new_sourcefilepath}".format(new_sourcefilepath=new_sourcefilepath))
 
-        gdf.to_csv(new_sourcefilepath)
+        filtered_df.to_csv(new_sourcefilepath)
         os.chmod(new_sourcefilepath, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
 
         while True:
@@ -120,9 +142,9 @@ class Csv:
                 print("PATH EXISTS "+new_sourcefilepath)
                 break
 
-        # gdf.to_file(new_sourcefilepath)
         # create vrtfile
         vrt_filepath = self.create_vrt_file(self.dataset_queue_name, os.path.basename(new_sourcefilepath))
         # ingest data using ogr2ogr
         self.ingest_ogr(self.dataset_queue_name, vrt_filepath)
 
+        # TODO: publish event or update data_queues table progress here
