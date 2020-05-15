@@ -54,7 +54,8 @@ INSTALLED_APPS = [
 
     # apps
     'layers',
-    'datasets'
+    'datasets',
+    'clusters'
 ]
 
 LOGGING = {

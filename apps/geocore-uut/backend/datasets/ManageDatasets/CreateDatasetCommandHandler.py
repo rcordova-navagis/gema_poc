@@ -24,8 +24,6 @@ class CreateDatasetCommandHandler(CommandHandler):
         dataset = Datasets.objects.create(dataset_queue_id=dataset_queue.pk)
         dataset.save()
 
-        print(dataset_queue.sourcefile.path)
-
         # start parsing and ingest process
         IngestDatasetTask().get_task.apply_async(args=[dataset.pk, dataset_queue.pk, dataset_queue.name, dataset_queue.sourcefile.path])
 

@@ -5,13 +5,17 @@ from django.http import JsonResponse, HttpResponse
 from rest_framework.views import APIView
 from uut.commandbus import commandbus
 from django.conf import settings
+from uut.ActionResolver import ActionResolver
 
 from .ManageCategories.CreateCategoryCommand import CreateCategoryCommand
 from .ManageLayers.CreateLayerCommand import CreateLayerCommand
 from datasets.ManageDatasets.CreateDatasetCommand import CreateDatasetCommand
 from .SeedTilestacheLayer import SeedTilestacheLayerCommand
 
+from uut.tasks import tasks
+
 import logging
+
 logger = logging.getLogger('uut')
 
 
@@ -44,19 +48,24 @@ def add_category(request):
 
 class LayersView(APIView):
     def get(self, request):
+        ActionResolver([
+            {'action': 'warm_tilestache', 'params': {'zooms': [1,2], 'table': 'dasda', 'dataset_id': 1}},
+            {'action': 'do_cluster', 'params': {'zooms': [1,2], 'table': 'sdfg', 'dataset_id': 1}}
+        ]).run_actions()
+        # tasks.publish_message({'hello': 'world'})
         # logger.warning("Test!!")
-        name = request.GET['name']
-
-        fileh = logging.FileHandler("{name}.log".format(name=name), 'a')
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(message)s')
-        fileh.setFormatter(formatter)
-        log = logging.getLogger(name)
-        log.addHandler(fileh)
-
-        # log = logging.getLogger()
-        resp = "LAYERS GET name={name}".format(name=name)
-        log.warning(resp)
-        return HttpResponse(resp)
+        # name = request.GET['name']
+        #
+        # fileh = logging.FileHandler("{name}.log".format(name=name), 'a')
+        # formatter = logging.Formatter('%(asctime)s - %(name)s - %(message)s')
+        # fileh.setFormatter(formatter)
+        # log = logging.getLogger(name)
+        # log.addHandler(fileh)
+        #
+        # # log = logging.getLogger()
+        # resp = "LAYERS GET name={name}".format(name=name)
+        # log.warning(resp)
+        return HttpResponse('layers view')
 
 
     def post(self, request):

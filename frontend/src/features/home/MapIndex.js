@@ -13,7 +13,6 @@ import {useSubscription} from '@apollo/react-hooks/lib/useSubscription';
 import {CategoriesTransformer} from "./../../libs/geocore-common/utils";
 import {useToggleMapLayers} from "../common/redux/hooks";
 
-
 const _mapOptions = {zoom: 3};
 // let _layerManager;
 
@@ -113,7 +112,7 @@ function MapIndex (props) {
         if (categoryData && Array.isArray(categoryData.categories) && layersData.layers && Array.isArray(layersData.layers)) {
             let hierarchy = CategoriesTransformer.transformLayerHierarchy(layersData.layers, categoryData.categories);
             // let hierarchy = CategoriesTransformer.transformToDropdownTreeSelect(categoryData.categories);
-            // console.log('hiearchy: ',hierarchy);
+            console.log('hiearchy: ',hierarchy);
             setLayersHierarchy(hierarchy);
         }
     }, [layersData, categoryData]);
@@ -161,7 +160,7 @@ function MapIndex (props) {
             config={config}
             mapOptions={_mapOptions}
         >
-            <LayerOverlay config={config} layers={layers} ref={mapRef} />
+            <LayerOverlay config={config} layers={tilestacheLayers} ref={mapRef} />
         </GeocoreMap>
       </div>
     );

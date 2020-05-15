@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import {Paper, IconButton, Toolbar, Divider, TextField, InputAdornment, Menu, MenuItem} from '@material-ui/core';
 import {Layers, Ballot, Search, MoreVert} from '@material-ui/icons';
 import Tree, {TreeNode} from 'rc-tree';
+import {isEmpty} from 'underscore';
+import PlaceIcon from '@material-ui/icons/Place';
+import PermMediaIcon from '@material-ui/icons/PermMedia';
 
 
 const LayerMenuFilter = () => (
@@ -154,13 +157,16 @@ export default class LayerMenu extends Component {
             if (item.children) {
                 return (
                     <TreeNode key={item.key}
-                              title={item.name}>
+                              title={item.name}
+                              icon={isEmpty(item.dataset) ? <PermMediaIcon/> : <PlaceIcon />}
+                    >
                         {renderTree(item.children)}
                     </TreeNode>
                 );
             }
 
             return <TreeNode key={item.key}
+                             icon={isEmpty(item.dataset) ? <PermMediaIcon/> : <PlaceIcon />}
                              title={item.name}/>;
         });
     };
@@ -198,7 +204,7 @@ export default class LayerMenu extends Component {
                     ? (
                     <Tree
                         checkable
-                        showIcon={false}
+                        showIcon={true}
                         autoExpandParent={true}
                         onExpand={this.onExpand.bind(this)}
                         onCheck={this.onCheck.bind(this)}

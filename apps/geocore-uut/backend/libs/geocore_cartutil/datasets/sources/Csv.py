@@ -148,3 +148,8 @@ class Csv:
         self.ingest_ogr(self.dataset_queue_name, vrt_filepath)
 
         # TODO: publish event or update data_queues table progress here
+
+        return [
+            {'action': 'warm_tilestache', 'params': {'zooms': [1,2], 'table': self.dataset_queue_name, 'dataset_id': self.dataset_id}},
+            {'action': 'do_cluster', 'params': {'zooms': [1,2], 'table': self.dataset_queue_name, 'dataset_id': self.dataset_id}}
+        ];
