@@ -1,0 +1,22 @@
+@import '../../styles/mixins';
+
+.uut-uut-list-item-details {
+  display: flex;
+  flex: 1;
+  width: inherit;
+  height: inherit;
+
+  > .MuiContainer-root {
+    padding: 0;
+    display: flex;
+    flex-flow: column;
+
+    .uut-uut-list-item-details-flex-content {
+      display: flex;
+      flex: 1;
+      width: inherit;
+      height: inherit;
+      overflow-y: auto;
+    }
+  }
+}

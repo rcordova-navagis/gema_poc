@@ -1,0 +1,20 @@
+// index is the entry for all styles.
+@import 'global/var';
+@import 'global/common';
+@import 'mixins';
+
+@import 'ui/ui';
+
+@import 'libs/material-ui',
+        'libs/rc-tree',
+        'libs/dropdown-tree-select',
+        'libs/material-ui-file-dropzone'
+;
+
+@import '../features/home/style';
+@import '../features/common/style';
+@import '../features/authentication/style';
+@import '../features/uut/style';
+@import '../features/datasource/style';
+@import '../features/layer/style';
+@import '../features/category/style';

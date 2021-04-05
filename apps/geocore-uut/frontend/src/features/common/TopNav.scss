@@ -1,0 +1,18 @@
+@import '../../styles/mixins';
+
+.common-top-nav {
+  height: 100%;
+
+  .common-top-nav-toolbar {
+    height: 48px;
+    min-height: 0;
+  }
+
+  .common-top-nav-brand {
+    > img {
+      height: 30px;
+      margin: 8px 16px;
+      cursor: pointer;
+    }
+  }
+}

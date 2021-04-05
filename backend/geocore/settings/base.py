@@ -6,9 +6,13 @@ import sys
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-DJANGO_ROOT  = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+DJANGO_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+
 PROJECT_ROOT = os.path.dirname(DJANGO_ROOT)
-LOG_DIR      = os.path.join(PROJECT_ROOT, 'logs')
+
+BASE_DIR = PROJECT_ROOT
+
+LOG_DIR = os.path.join(PROJECT_ROOT, 'logs')
 
 for directory in (LOG_DIR):
     sys.path.insert(0, directory)
@@ -42,6 +46,7 @@ INSTALLED_APPS = [
 
     # extensions
     'rest_framework'
+    #'django_tilestache.apps.DjangoTilestacheConfig'
 ]
 
 LOGGING = {
@@ -74,7 +79,7 @@ REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        'rest_framework.permissions.AllowAny'
     ]
 }
 

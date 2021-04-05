@@ -22,6 +22,56 @@ from . import views
 from django.contrib.auth.models import User
 from rest_framework import serializers, viewsets, routers
 
+#from django_tilestache import urls as django_tilestache_urls
+#from django_tilestache.models import Layer
+
+# "cache": {
+#     "dirs": "portable",
+#     "name": "disk",
+#     "gzip": ["txt", "text", "json", "xml", "pbf", "mvt"],
+#     "path": "/app/api/cache/tilestache/tiles/osmroads",
+#     "umask": "000"
+# },
+
+# layer = Layer.objects.create(
+#     **{
+#         "name": "osmroads",
+#         "provider": {
+#             "class": "TileStache.Goodies.VecTiles:Provider",
+#             "kwargs": {
+#                 "clip": False,
+#                 "dbinfo": {
+#                     "host": "geocore-pgdb",
+#                     "database": "geocoredb",
+#                     "user": "geocoreuser",
+#                     "password": "mYge0cor3"
+#                 },
+#                 "queries": [
+#                     "SELECT way AS __geometry__, osm_id, name FROM planet_osm_roads"
+#                 ]
+#             }
+#         }
+#     }
+# )
+
+# layer = Layer.objects.create(
+#     **{
+#         "name": "roads",
+#         "allowed_origin": "*",
+#         "provider": {
+#             "name": "vector",
+#             "driver": "PostgreSQL",
+#             "parameters": {
+#                 "host": "geocore-pgdb",
+#                 "port": "5444",
+#                 "dbname": "geocoredb",
+#                 "user": "geocoreuser",
+#                 "password": "mYge0cor3",
+#                 "table": "planet_osm_roads"
+#             }
+#         }
+#     }
+# )
 
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -42,9 +92,9 @@ router.register(r'users', UserViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    #url(r'^', include(django_tilestache_urls))
 ]
 
 if settings.DEBUG:
@@ -58,3 +108,4 @@ if settings.DEBUG:
 
     urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+

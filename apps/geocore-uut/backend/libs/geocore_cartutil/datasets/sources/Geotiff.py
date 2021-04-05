@@ -1,0 +1,2 @@
+class Geotiff:
+    pass

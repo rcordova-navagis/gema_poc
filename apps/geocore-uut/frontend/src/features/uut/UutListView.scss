@@ -1,0 +1,12 @@
+@import '../../styles/mixins';
+
+.uut-uut-list-view {
+  > .MuiCardContent-root {
+    padding: 0;
+
+    > .MuiList-root {
+      overflow: auto;
+      max-height: calc(85vh - 0.55em);
+    }
+  }
+}

@@ -1,0 +1,26 @@
+//@import '~react-md/src/scss/react-md';
+@import 'var';
+
+// Here you put all global css rules.
+//@include react-md-everything;
+//@include react-md-theme-everything(
+//  $md-primary-color,
+//  $md-secondary-color
+//);
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  font-family: sans-serif;
+}
+
+#root {
+  width: inherit;
+  height: inherit;
+}
+
+.page-component {
+  height: 100%;
+  width: inherit;
+}

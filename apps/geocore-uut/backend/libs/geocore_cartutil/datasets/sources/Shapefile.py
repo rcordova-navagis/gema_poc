@@ -1,0 +1,2 @@
+class Shapefile:
+    pass

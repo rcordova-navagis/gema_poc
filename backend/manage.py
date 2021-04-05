@@ -4,9 +4,15 @@ import os
 import sys
 from dotenv import load_dotenv
 
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+
 
 def main():
-    load_dotenv(dotenv_path='./../.env')
+    NON_DOCKER_ENV_PATH = os.path.join(BASE_DIR, '..', '.env')
+    DOCKER_ENV_PATH = os.path.join(BASE_DIR, '.env')
+    dotenv_path = DOCKER_ENV_PATH if os.path.exists(DOCKER_ENV_PATH) else NON_DOCKER_ENV_PATH
+
+    load_dotenv(dotenv_path=dotenv_path)
 
     DEBUG = bool(os.environ.get('DEBUG', True))
 

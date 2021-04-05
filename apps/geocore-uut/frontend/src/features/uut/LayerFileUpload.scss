@@ -1,0 +1,12 @@
+@import '../../styles/mixins';
+
+.uut-layer-file-upload {
+  .uut-layer-file-upload-content {
+    padding: 0 1em 1em;
+
+    .uut-file-upload {
+      padding: 0 1em;
+    }
+  }
+
+}

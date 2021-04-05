@@ -1,0 +1,9 @@
+@import '../../styles/mixins';
+
+.uut-dataset-table {
+  width: inherit;
+
+  .MuiTableContainer-root {
+    height: 100%;
+  }
+}

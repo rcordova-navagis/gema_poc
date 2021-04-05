@@ -1,0 +1,67 @@
+@import '~rc-tree/assets/index.css';
+
+.rc-tree {
+
+  .rc-tree-list {
+
+    .rc-tree-list-holder-inner {
+
+      .rc-tree-treenode {
+        padding: 2px 0;
+
+        .rc-tree-title {
+          color: $menuFontColor;
+        }
+
+        .rc-tree-checkbox {
+          @extend .md-icon;
+
+          margin: 0 10px 0 0px;
+          background: none;
+          font-size: 17px;
+          line-height: 0.75;
+          font-family: 'Material Icons';
+
+          &:before {
+            content: '\e835';
+          }
+        }
+
+        .rc-tree-checkbox-checked {
+          &:before {
+            content: '\e834';
+          }
+        }
+
+        .rc-tree-switcher {
+          @extend .md-icon;
+
+          background: none;
+          font-family: 'Material Icons';
+          margin-right: 6px;
+          font-size: 20px;
+        }
+
+        .rc-tree-switcher_open {
+          &:before {
+            content: '\e5cf';
+          }
+        }
+
+        .rc-tree-switcher_close {
+          &:before {
+            content: '\e5cc';
+          }
+        }
+      }
+
+      .rc-tree-treenode-switcher-open {
+
+      }
+
+      .rc-tree-treenode-switcher-close {
+
+      }
+    }
+  }
+}

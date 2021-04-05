@@ -1,0 +1,30 @@
+header.md-toolbar {
+  height: 48px;
+
+  button.menu-btn {
+    margin: 4px 0 4px 14px;
+  }
+
+  button {
+    margin: 4px 0;
+  }
+
+  .md-title {
+    line-height: 48px;
+    margin-left: 18px;
+  }
+}
+
+.geocore-btn {
+  padding: 8px !important;
+}
+
+.MuiDialog-root {
+  .MuiDialogTitle-root {
+    padding: 0.5em;
+  }
+
+  .MuiDialogContent-root {
+    padding: 0.5rem;
+  }
+}

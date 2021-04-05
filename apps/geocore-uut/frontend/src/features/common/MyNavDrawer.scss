@@ -1,0 +1,14 @@
+@import '../../styles/mixins';
+
+.common-my-nav-drawer {
+  > .MuiDrawer-paper {
+    min-width: 240px;
+  }
+
+  .common-my-nav-drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}
+

@@ -1,10 +1,11 @@
 import { combineReducers } from 'redux';
 // import { routerReducer } from 'react-router-redux';
-import { connectRouter } from 'connected-react-router'
+import { connectRouter } from 'connected-react-router';
 import history from './history';
+import configReducer from '../features/config/redux/reducer';
 import homeReducer from '../features/home/redux/reducer';
 import commonReducer from '../features/common/redux/reducer';
-import examplesReducer from '../features/examples/redux/reducer';
+import authenticationReducer from '../features/authentication/redux/reducer';
 
 // NOTE 1: DO NOT CHANGE the 'reducerMap' name and the declaration pattern.
 // This is used for Rekit cmds to register new features, remove features, etc.
@@ -12,10 +13,11 @@ import examplesReducer from '../features/examples/redux/reducer';
 // So that it's easy for others to understand it and Rekit could manage them.
 
 const reducerMap = {
+  config: configReducer,
   router: connectRouter(history),
   home: homeReducer,
   common: commonReducer,
-  examples: examplesReducer,
+  authentication: authenticationReducer,
 };
 
 export default combineReducers(reducerMap);

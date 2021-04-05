@@ -1,0 +1,2 @@
+class Multigeometry:
+    pass

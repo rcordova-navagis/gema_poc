@@ -1,0 +1,14 @@
+@import '../../styles/mixins';
+
+.uut-uut-list {
+  > .MuiPaper-root.MuiCard-root {
+    min-height: 100%;
+    height: 100%;
+  }
+
+  .uut-uut-list-container {
+    height: auto;
+    //overflow: hidden;
+    padding: 0;
+  }
+}

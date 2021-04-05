@@ -1,0 +1,19 @@
+@import '../../styles/mixins';
+
+.uut-uut-list-toolbar {
+    //@extend .MuiPaper-elevation1;
+    .geocore-toolbar {
+      padding: 0 0 0 12px;
+
+      .MuiIconButton-edgeStart {
+        margin-left: 0;
+      }
+
+      .uut-toolbar-primary-btn {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin: 0 8px 0 0;
+      }
+    }
+}

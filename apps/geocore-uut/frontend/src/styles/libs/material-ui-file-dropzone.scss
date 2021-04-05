@@ -1,0 +1,13 @@
+
+$dropzoneColor: #F0F0F0;
+
+//[class^="DropzoneArea-dropZone-"] {
+//    background-color: opacify($dropzoneColor, 0.85) !important;
+//    overflow: hidden;
+//}
+
+.geocore-file-dropzone {
+    padding: 0 1em;
+    background-color: opacify($dropzoneColor, 0.85) !important;
+    overflow: hidden;
+}
