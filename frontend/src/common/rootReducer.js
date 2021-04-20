@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
-// import { routerReducer } from 'react-router-redux';
-import { connectRouter } from 'connected-react-router'
+import { connectRouter } from 'connected-react-router';
 import history from './history';
+import configReducer from '../features/config/redux/reducer';
 import homeReducer from '../features/home/redux/reducer';
 import commonReducer from '../features/common/redux/reducer';
 import authenticationReducer from '../features/authentication/redux/reducer';
@@ -13,6 +13,7 @@ import authenticationReducer from '../features/authentication/redux/reducer';
 
 const reducerMap = {
   router: connectRouter(history),
+  config: configReducer,
   home: homeReducer,
   common: commonReducer,
   authentication: authenticationReducer,

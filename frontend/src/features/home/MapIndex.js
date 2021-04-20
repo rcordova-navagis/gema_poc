@@ -12,6 +12,8 @@ import {layerCategoriesSubscription, layersSubscription} from './../../libs/geoc
 import {useSubscription} from '@apollo/react-hooks/lib/useSubscription';
 import {CategoriesTransformer} from "./../../libs/geocore-common/utils";
 import {useToggleMapLayers} from "../common/redux/hooks";
+import {isEmpty} from 'underscore';
+
 
 const _mapOptions = {zoom: 3};
 // let _layerManager;
@@ -59,7 +61,8 @@ function MapIndex (props) {
     const [layersHierarchy, setLayersHierarchy] = useState([]);
     const mapRef = useRef(null);
     const [mapLoaded, setMapLoaded] = useState(false);
-    const config = useSelector(state => state.config);
+    // const config = useSelector(state => state.config);
+    const config = props.config;
     const checkedLayers = useSelector(state => state.common.checkedLayers);
     const {setMapViewport} = useSetMapViewport();
     const [tilestacheLayers, setTilestacheLayers] = useState([]);
@@ -147,6 +150,8 @@ function MapIndex (props) {
             setMapLoaded(false);
         }
     }, []);
+
+    if (isEmpty(config)) return null;
 
     return (
       <div className="home-map-index">
