@@ -99,7 +99,7 @@ function TopNav (props) {
                   <img src={geocoreLogo}
                        alt=""
                        onClick={() => {
-                           // props.history.push('/');
+                           props.history.push('/');
                        }}
                   />
               </span>

@@ -48,10 +48,12 @@ def add_category(request):
 
 class LayersView(APIView):
     def get(self, request):
-        ActionResolver([
-            {'action': 'warm_tilestache', 'params': {'zooms': [1,2], 'table': 'dasda', 'dataset_id': 1}},
-            {'action': 'do_cluster', 'params': {'zooms': [1,2], 'table': 'sdfg', 'dataset_id': 1}}
-        ]).run_actions()
+        
+
+        # ActionResolver([
+        #     {'action': 'warm_tilestache', 'params': {'zooms': [1,2], 'table': 'dasda', 'dataset_id': 1}},
+        #     {'action': 'do_cluster', 'params': {'zooms': [1,2], 'table': 'sdfg', 'dataset_id': 1}}
+        # ]).run_actions()
         # tasks.publish_message({'hello': 'world'})
         # logger.warning("Test!!")
         # name = request.GET['name']

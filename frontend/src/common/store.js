@@ -23,7 +23,7 @@ if (process.env.NODE_ENV === 'development') {
   }
 }
 
-function configureStore(initialState={}) {
+function configureStore(initialState) {
   const store = createStore(
     rootReducer,
     initialState,

@@ -31,3 +31,6 @@ parts/
 sdist/
 var/
 wheels/
+media/uploads/
+logs/
+static/
