@@ -8,8 +8,8 @@ services:
     restart: always
     ports:
       - "8090:8080"
-    depends_on:
-      - "geocore-pgdb"
+#    depends_on:
+#      - "geocore-pgdb"
     env_file:
       - ./.env.prod
     networks:
@@ -81,10 +81,10 @@ services:
       - "84:8084"
     env_file:
       - ./.env.prod
-    depends_on:
-      - geocore-pgdb
-    links:
-      - geocore-pgdb
+#    depends_on:
+#      - geocore-pgdb
+#    links:
+#      - geocore-pgdb
     networks:
       - back-tier
 
@@ -124,10 +124,10 @@ services:
     env_file:
       - ./.env.prod
     depends_on:
-      - geocore-pgdb
+#      - geocore-pgdb
       - geocore-redis
     links:
-      - geocore-pgdb
+#      - geocore-pgdb
       - geocore-redis
     networks:
       - back-tier
