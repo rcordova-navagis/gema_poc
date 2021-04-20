@@ -1,0 +1,11 @@
+FROM node:7.10 as build-deps
+WORKDIR /app/frontend
+COPY package.json yarn.lock /app/frontend
+RUN yarn
+COPY . /app/frontend
+RUN yarn build
+
+FROM nginx:1.12-alpine
+COPY --from=build-deps /app/frontend /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

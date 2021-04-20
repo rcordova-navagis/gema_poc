@@ -1,8 +1,7 @@
 import { combineReducers } from 'redux';
 // import { routerReducer } from 'react-router-redux';
-import { connectRouter } from 'connected-react-router';
+import { connectRouter } from 'connected-react-router'
 import history from './history';
-import configReducer from '../features/config/redux/reducer';
 import homeReducer from '../features/home/redux/reducer';
 import commonReducer from '../features/common/redux/reducer';
 import authenticationReducer from '../features/authentication/redux/reducer';
@@ -13,7 +12,6 @@ import authenticationReducer from '../features/authentication/redux/reducer';
 // So that it's easy for others to understand it and Rekit could manage them.
 
 const reducerMap = {
-  config: configReducer,
   router: connectRouter(history),
   home: homeReducer,
   common: commonReducer,
