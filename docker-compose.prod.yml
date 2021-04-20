@@ -192,8 +192,6 @@ services:
     container_name: geocore-frontend
     volumes:
       - ./frontend:/app/frontend
-      - static_volume:/home/app/web/staticfiles
-      - media_volume:/home/app/web/mediafiles
     ports:
       - 80:80
     links:
