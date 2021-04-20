@@ -5,16 +5,15 @@ import { connect } from 'react-redux';
 import * as actions from './redux/actions';
 import MapIndex from "./MapIndex";
 
-export class IndexPage extends Component {
+class IndexPage extends Component {
   static propTypes = {
-    home: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
+    config: PropTypes.object.isRequired,
   };
 
   render() {
     return (
       <div className="page-component home-index-page">
-        <MapIndex />
+        <MapIndex config={this.props.config} />
       </div>
     );
   }
@@ -23,18 +22,11 @@ export class IndexPage extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    home: state.home,
-  };
-}
-
-/* istanbul ignore next */
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators({ ...actions }, dispatch)
+    config: state.config,
   };
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(IndexPage);
