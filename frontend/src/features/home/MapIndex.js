@@ -34,12 +34,12 @@ const layers = [
 
         new MVTLayer({
             data: `${CONFIG.TILESTACHE_BASE_URL}/osmpoints/{z}/{x}/{y}.pbf`,
-            pickable: false,
+            pickable: true,
             filled: true,
             getFillColor: [200, 0, 0],
             getRadius: 20,
             pointRadiusMinPixels: 4,
-            pointRadiusMaxPixels: 4
+            pointRadiusMaxPixels: 4,
         }),
 
         // new MVTLayer({
@@ -67,6 +67,9 @@ function MapIndex (props) {
     const {setMapViewport} = useSetMapViewport();
     const [tilestacheLayers, setTilestacheLayers] = useState([]);
 
+    const onClickObject = (info, event) => {
+        console.log('on click object: ', info, event);
+    };
 
     const handleMapLoad = useCallback((map) => {
             if (!map) return;
@@ -97,17 +100,6 @@ function MapIndex (props) {
                     visible: false,
                 });
             }));
-            // setTilestacheLayers([
-            //     new MVTLayer({
-            //         data: `${CONFIG.TILESTACHE_BASE_URL}/osmpoints/{z}/{x}/{y}.pbf`,
-            //         pickable: false,
-            //         filled: true,
-            //         getFillColor: [200, 0, 0],
-            //         getRadius: 20,
-            //         pointRadiusMinPixels: 4,
-            //         pointRadiusMaxPixels: 4
-            //     })
-            // ]);
         }
     }, [layersData]);
 
@@ -142,7 +134,22 @@ function MapIndex (props) {
 
 
     useEffect(function() {
-        return function cleanup() {
+        setTilestacheLayers([
+            new MVTLayer({
+                data: `${CONFIG.TILESTACHE_BASE_URL}/osmpoints/{z}/{x}/{y}.pbf`,
+                pickable: true,
+                filled: true,
+                getFillColor: [200, 0, 0],
+                getRadius: 20,
+                pointRadiusMinPixels: 4,
+                pointRadiusMaxPixels: 4,
+                minZoom: 8,
+                maxZoom: 23,
+                onClick: onClickObject,
+            })
+        ]);
+
+        return () => {
             if (mapRef && mapRef.current) {
                 mapRef.current = null;
             }
