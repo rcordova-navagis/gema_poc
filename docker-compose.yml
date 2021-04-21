@@ -63,22 +63,6 @@ services:
     networks:
       - back-tier
 
-#  geocore-worker:
-#    build:
-#      context: ./apps/geocore-worker
-#      dockerfile: Dockerfile.celery
-#    container_name: geocore-worker
-#    volumes:
-#      - ./apps/geocore-worker:/apps/worker
-#    links:
-#      - geocore-rabbitmq
-#      - geocore-uut-backend
-#    depends_on:
-#      - geocore-rabbitmq
-#      - geocore-uut-backend
-#    networks:
-#      - back-tier
-
   geocore-redis:
     container_name: geocore-redis
     image: bitnami/redis:5.0
@@ -210,20 +194,6 @@ services:
       - geocore-mongodb
     networks:
       - back-tier
-
-#  frontend:
-#    restart: always
-#    build: ./frontend
-#    container_name: frontend
-#    command: npm start
-#    volumes:
-#      - ./frontend:/app/frontend
-#    ports:
-#      - "3000:3000"
-#    links:
-#      - geocore-api
-#    networks:
-#      - back-tier
 
 networks:
   back-tier:

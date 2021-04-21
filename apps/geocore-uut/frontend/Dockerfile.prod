@@ -1,13 +1,13 @@
 FROM node:12.22.1 as build-deps
-WORKDIR /app/frontend
-COPY package.json /app/frontend
-COPY yarn.lock /app/frontend
+WORKDIR /apps/uut/frontend
+COPY package.json /apps/uut/frontend
+COPY yarn.lock /apps/uut/frontend
 RUN yarn
-COPY . /app/frontend
+COPY . /apps/uut/frontend
 RUN yarn build
 
 FROM nginx:1.12-alpine
 RUN rm /usr/share/nginx/html/index.html
-COPY --from=build-deps /app/frontend/build /usr/share/nginx/html
-EXPOSE 80
+COPY --from=build-deps /apps/uut/frontend/build /usr/share/nginx/html
+EXPOSE 81
 CMD ["nginx", "-g", "daemon off;"]
