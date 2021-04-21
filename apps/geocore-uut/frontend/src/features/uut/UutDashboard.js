@@ -10,7 +10,7 @@ import {useSubscription} from '@apollo/react-hooks/lib/useSubscription';
 import {CategoriesTransformer} from './../../libs/geocore-common';
 import {layerCategoriesSubscription, layerDatasetsSubscription} from './../../libs/geocore-common/gql';
 import {useSelector} from 'react-redux';
-import * as Faker from 'faker';
+// import * as Faker from 'faker';
 import {random} from 'underscore';
 import {useToggleDatasourceDialog} from "../datasource/redux/hooks";
 
