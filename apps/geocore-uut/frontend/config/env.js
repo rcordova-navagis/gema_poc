@@ -16,7 +16,7 @@ if (!NODE_ENV) {
 }
 
 const SYSTEM_CONFIG = dotenv.config({
-    path: ['prod', 'production'].includes(NODE_ENV) ? './../.env.frontend.prod' : './../.env.frontend'
+    path: ['prod', 'production'].includes(NODE_ENV) ? '.env.frontend.prod' : '.env.frontend'
 });
 console.log('SYSTEM_CONFIG: ', SYSTEM_CONFIG);
 

@@ -7,7 +7,9 @@ COPY . /apps/uut/frontend
 RUN yarn build
 
 FROM nginx:1.12-alpine
+RUN rm /etc/nginx/conf.d/default.conf
 RUN rm /usr/share/nginx/html/index.html
+COPY conf/nginx.conf /etc/nginx/conf.d/geocore-uut-frontend.conf
 COPY --from=build-deps /apps/uut/frontend/build /usr/share/nginx/html
 EXPOSE 81
 CMD ["nginx", "-g", "daemon off;"]
