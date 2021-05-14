@@ -1,0 +1,7 @@
+FROM nginx:stable
+
+RUN mkdir -p /apps/uut/logs/nginx
+
+RUN rm /etc/nginx/conf.d/default.conf
+
+COPY conf/nginx.conf /etc/nginx/conf.d/geocore-uut-backend.conf

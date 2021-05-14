@@ -21,7 +21,9 @@ export default function UutListView(props) {
                 {
                     props.data.map(row => (
                         <Fragment>
-                            <ListItem alignItems="flex-start" key={row.id}>
+                            <ListItem button alignItems="flex-start"
+                                      key={row.id}
+                                      onClick={() => props.showLayerDetails(row.id)}>
                                 <ListItemAvatar>
                                     <Avatar>{row.status.charAt(0)}</Avatar>
                                 </ListItemAvatar>

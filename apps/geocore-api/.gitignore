@@ -31,3 +31,4 @@ parts/
 sdist/
 var/
 wheels/
+static/

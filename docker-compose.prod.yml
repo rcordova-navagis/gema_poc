@@ -1,53 +1,241 @@
 version: '3'
 
 services:
-  api:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile.prod
-    container_name: api
-    command: gunicorn geocore.wsgi:application --bind 0.0.0.0:8080
+
+  geocore-gql:
+    container_name: geocore-gql
+    image: hasura/graphql-engine:latest
+    restart: always
+    ports:
+      - "8090:8080"
+#    depends_on:
+#      - "geocore-pgdb"
+    env_file:
+      - ./.env.prod
+    networks:
+      - back-tier
+
+  geocore-rabbitmq:
+    container_name: geocore-rabbitmq
+    image: rabbitmq:3-management
+    restart: always
     volumes:
-      - ./backend/:/app/api/
-    expose:
-      - 8080
+      - "./data/rabbitmq/etc:/etc/rabbitmq"
+      - "./data/rabbitmq/data:/var/lib/rabbitmq"
+      - "./data/rabbitmq/logs:/var/log/rabbitmq"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    env_file:
+      - ./.env.prod
+    networks:
+      - back-tier
+
+  # Celery worker
+  geocore-worker:
+    restart: always
+    build:
+      context: ./apps/geocore-uut/backend
+      dockerfile: Dockerfile.worker
+    container_name: geocore-worker
+    volumes:
+      - ./apps/geocore-uut/backend:/apps/uut
+    env_file:
+      - ./.env.prod
+    links:
+      - geocore-rabbitmq
+      - geocore-uut-backend
+    depends_on:
+      - geocore-rabbitmq
+      - geocore-uut-backend
+    networks:
+      - back-tier
+
+  geocore-redis:
+    container_name: geocore-redis
+    image: bitnami/redis:5.0
+    restart: always
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_MASTER_PORT_NUMBER=6379
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data/redis:/bitnami/redis/data
+    networks:
+      - back-tier
+
+  geocore-api:
+    restart: always
+    build:
+      context: ./apps/geocore-api
+      dockerfile: Dockerfile
+      #dockerfile: Dockerfile.prod
+    container_name: geocore-api
+    command: python manage.py runserver 0.0.0.0:8084
+    volumes:
+      - ./apps/geocore-api:/apps/api
+      - ./data:/data
+    ports:
+      # HOST:CONTAINER
+      - "84:8084"
+    env_file:
+      - ./.env.prod
+#    depends_on:
+#      - geocore-pgdb
+#    links:
+#      - geocore-pgdb
+    networks:
+      - back-tier
+
+  geocore-uut-backend:
+    restart: always
+    build:
+      context: ./apps/geocore-uut/backend
+      dockerfile: Dockerfile
+    container_name: geocore-uut-backend
+    command: python manage.py runserver 0.0.0.0:8008
+    volumes:
+      - ./apps/geocore-uut/backend:/apps/uut
+      - ./data:/data
     env_file:
       - ./.env.prod
     depends_on:
-      - db
-      - redis
+      - geocore-rabbitmq
     links:
-      - db
-      - redis
-
-  db:
-    image: mdillon/postgis:latest
-    restart: always
-    volumes:
-      - "db-data:/var/lib/postgresql/data"
+      - geocore-rabbitmq
     networks:
       - back-tier
-    ports:
-      - "5432:5432"
-    env_file:
-      - ./.env.db
 
-  redis:
-    image: redis
-
-  nginx:
-    build: ./nginx
+  geocore-uut-backend-nginx:
+    restart: always
+    build:
+      context: ./apps/geocore-uut/backend
+      dockerfile: Dockerfile.nginx
+    container_name: geocore-uut-backend-nginx
     volumes:
-      - static_volume:/home/app/web/staticfiles
-      - media_volume:/home/app/web/mediafiles
+      - ./apps/geocore-uut/backend:/apps/uut
     ports:
-      - 1337:80
+      - "88:88"
     depends_on:
-      - api
+      - geocore-uut-backend
+    links:
+      - geocore-uut-backend
+    networks:
+      - back-tier
 
-volumes:
-  db-data:
+  geocore-uut-frontend:
+    restart: always
+    build:
+      context: ./apps/geocore-uut/frontend
+      dockerfile: Dockerfile.prod
+    container_name: geocore-uut-frontend
+    volumes:
+      - ./apps/geocore-uut/frontend:/apps/uut/frontend
+    ports:
+      - 81:81
+    links:
+      - geocore-api
+      - geocore-gql
+      - geocore-uut-backend-nginx
+    depends_on:
+      - geocore-api
+      - geocore-gql
+      - geocore-uut-backend-nginx
+    networks:
+      - back-tier
+
+  geocore-tileserver:
+    restart: always
+    build:
+      context: ./apps/geocore-tileserver
+      dockerfile: Dockerfile
+    container_name: geocore-tileserver
+    command: python3 manage.py runserver 0.0.0.0:8088
+    volumes:
+      - ./apps/geocore-tileserver:/apps/tileserver
+    env_file:
+      - ./.env.prod
+    depends_on:
+#      - geocore-pgdb
+      - geocore-redis
+    links:
+#      - geocore-pgdb
+      - geocore-redis
+    networks:
+      - back-tier
+
+  geocore-tileserver-nginx:
+    restart: always
+    build:
+      context: ./apps/geocore-tileserver
+      dockerfile: Dockerfile.nginx
+    container_name: geocore-tileserver-nginx
+    volumes:
+      - ./apps/geocore-tileserver:/apps/tileserver
+    ports:
+      - "1001:1001"
+    depends_on:
+      - geocore-tileserver
+    links:
+      - geocore-tileserver
+    networks:
+      - back-tier
+
+  geocore-mongodb:
+    container_name: geocore-mongodb
+    image: mongo:latest
+    restart: always
+    ports:
+      - 27017:27017
+    command: mongod --logpath=/dev/null
+    env_file:
+      - ./.env.prod
+    volumes:
+      - "./data/mongo:/data/db"
+    networks:
+      - back-tier
+
+  geocore-cluster:
+    restart: always
+    build:
+      context: ./apps/geocore-cluster
+      dockerfile: Dockerfile
+    container_name: geocore-cluster
+    volumes:
+      - ./apps/geocore-cluster:/apps/cluster
+    ports:
+      - "83:8083"
+    env_file:
+      - ./.env.prod
+    depends_on:
+      - geocore-mongodb
+    links:
+      - geocore-mongodb
+    networks:
+      - back-tier
+
+  geocore-frontend:
+    restart: always
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    container_name: geocore-frontend
+    volumes:
+      - ./frontend:/app/frontend
+    ports:
+      - 80:80
+    links:
+      - geocore-api
+      - geocore-gql
+      - geocore-tileserver-nginx
+    depends_on:
+      - geocore-api
+      - geocore-gql
+      - geocore-tileserver-nginx
+    networks:
+      - back-tier
 
 networks:
-  front-tier:
   back-tier:
+    driver: bridge

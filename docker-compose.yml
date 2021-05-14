@@ -63,22 +63,6 @@ services:
     networks:
       - back-tier
 
-#  geocore-worker:
-#    build:
-#      context: ./apps/geocore-worker
-#      dockerfile: Dockerfile.celery
-#    container_name: geocore-worker
-#    volumes:
-#      - ./apps/geocore-worker:/apps/worker
-#    links:
-#      - geocore-rabbitmq
-#      - geocore-uut-backend
-#    depends_on:
-#      - geocore-rabbitmq
-#      - geocore-uut-backend
-#    networks:
-#      - back-tier
-
   geocore-redis:
     container_name: geocore-redis
     image: bitnami/redis:5.0
@@ -176,19 +160,40 @@ services:
     networks:
       - back-tier
 
-#  frontend:
-#    restart: always
-#    build: ./frontend
-#    container_name: frontend
-#    command: npm start
-#    volumes:
-#      - ./frontend:/app/frontend
-#    ports:
-#      - "3000:3000"
-#    links:
-#      - geocore-api
-#    networks:
-#      - back-tier
+  geocore-mongodb:
+    container_name: geocore-mongodb
+    image: mongo:latest
+    restart: always
+    ports:
+        - 27017:27017
+    command: mongod --logpath=/dev/null
+    env_file:
+      - ./.env
+    volumes:
+      - "./data/mongo:/data/db"
+    networks:
+      - back-tier
+
+  geocore-cluster:
+    restart: always
+    build:
+      context: ./apps/geocore-cluster
+      dockerfile: Dockerfile
+    container_name: geocore-cluster
+    volumes:
+      - ./apps/geocore-cluster:/apps/cluster
+    ports:
+      - "83:8083"
+    env_file:
+      - ./.env
+    depends_on:
+      - geocore-pgdb
+      - geocore-mongodb
+    links:
+      - geocore-pgdb
+      - geocore-mongodb
+    networks:
+      - back-tier
 
 networks:
   back-tier:

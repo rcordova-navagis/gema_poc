@@ -38,7 +38,8 @@ export default function UutLists(props) {
                                     setIsListMaximize={props.setIsListMaximize}
                                     deleteLayer={props.deleteLayer}
                                     toggleDatasourceDialog={props.toggleDatasourceDialog} />
-                    : <UutListView data={props.data} />
+                    : <UutListView data={props.data}
+                                   showLayerDetails={props.showLayerDetails} />
                 }
             </Container>
         </Paper>

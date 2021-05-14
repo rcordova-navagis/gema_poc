@@ -3,11 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const paths = require('./paths');
-const SYSTEM_CONFIG = require('dotenv').config({
-    path: './../.env.frontend'
-});
-
-console.log('SYSTEM_CONFIG: ', SYSTEM_CONFIG);
+const dotenv = require('dotenv');
 
 // Make sure that including paths.js after env.js will read .env variables.
 delete require.cache[require.resolve('./paths')];
@@ -18,6 +14,11 @@ if (!NODE_ENV) {
     'The NODE_ENV environment variable is required but was not specified.'
   );
 }
+
+const SYSTEM_CONFIG = dotenv.config({
+    path: ['prod', 'production'].includes(NODE_ENV) ? '.env.frontend.prod' : '.env.frontend'
+});
+console.log('SYSTEM_CONFIG: ', SYSTEM_CONFIG);
 
 // https://github.com/bkeepers/dotenv#what-other-env-files-can-i-use
 var dotenvFiles = [

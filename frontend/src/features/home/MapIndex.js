@@ -12,6 +12,8 @@ import {layerCategoriesSubscription, layersSubscription} from './../../libs/geoc
 import {useSubscription} from '@apollo/react-hooks/lib/useSubscription';
 import {CategoriesTransformer} from "./../../libs/geocore-common/utils";
 import {useToggleMapLayers} from "../common/redux/hooks";
+import {isEmpty} from 'underscore';
+
 
 const _mapOptions = {zoom: 3};
 // let _layerManager;
@@ -32,12 +34,12 @@ const layers = [
 
         new MVTLayer({
             data: `${CONFIG.TILESTACHE_BASE_URL}/osmpoints/{z}/{x}/{y}.pbf`,
-            pickable: false,
+            pickable: true,
             filled: true,
             getFillColor: [200, 0, 0],
             getRadius: 20,
             pointRadiusMinPixels: 4,
-            pointRadiusMaxPixels: 4
+            pointRadiusMaxPixels: 4,
         }),
 
         // new MVTLayer({
@@ -59,11 +61,15 @@ function MapIndex (props) {
     const [layersHierarchy, setLayersHierarchy] = useState([]);
     const mapRef = useRef(null);
     const [mapLoaded, setMapLoaded] = useState(false);
-    const config = useSelector(state => state.config);
+    // const config = useSelector(state => state.config);
+    const config = props.config;
     const checkedLayers = useSelector(state => state.common.checkedLayers);
     const {setMapViewport} = useSetMapViewport();
     const [tilestacheLayers, setTilestacheLayers] = useState([]);
 
+    const onClickObject = (info, event) => {
+        console.log('on click object: ', info, event);
+    };
 
     const handleMapLoad = useCallback((map) => {
             if (!map) return;
@@ -94,17 +100,6 @@ function MapIndex (props) {
                     visible: false,
                 });
             }));
-            // setTilestacheLayers([
-            //     new MVTLayer({
-            //         data: `${CONFIG.TILESTACHE_BASE_URL}/osmpoints/{z}/{x}/{y}.pbf`,
-            //         pickable: false,
-            //         filled: true,
-            //         getFillColor: [200, 0, 0],
-            //         getRadius: 20,
-            //         pointRadiusMinPixels: 4,
-            //         pointRadiusMaxPixels: 4
-            //     })
-            // ]);
         }
     }, [layersData]);
 
@@ -139,7 +134,22 @@ function MapIndex (props) {
 
 
     useEffect(function() {
-        return function cleanup() {
+        setTilestacheLayers([
+            new MVTLayer({
+                data: `${CONFIG.TILESTACHE_BASE_URL}/osmpoints/{z}/{x}/{y}.pbf`,
+                pickable: true,
+                filled: true,
+                getFillColor: [200, 0, 0],
+                getRadius: 20,
+                pointRadiusMinPixels: 4,
+                pointRadiusMaxPixels: 4,
+                minZoom: 8,
+                maxZoom: 23,
+                onClick: onClickObject,
+            })
+        ]);
+
+        return () => {
             if (mapRef && mapRef.current) {
                 mapRef.current = null;
             }
@@ -147,6 +157,8 @@ function MapIndex (props) {
             setMapLoaded(false);
         }
     }, []);
+
+    if (isEmpty(config)) return null;
 
     return (
       <div className="home-map-index">

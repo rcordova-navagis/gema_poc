@@ -1,0 +1,14 @@
+# Files ignored by Git
+# --------------------
+
+*.pyc
+*.py[cod]
+*$py.class
+__pycache__/
+
+*.log
+*.egg
+*.egg-info
+logs/**/*.log
+
+venv/

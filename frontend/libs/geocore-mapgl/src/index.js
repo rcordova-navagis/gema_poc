@@ -1,0 +1,1 @@
+export GoogleMap from './components/drivers/GoogleMap/GoogleMap';
