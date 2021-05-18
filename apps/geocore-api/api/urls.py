@@ -32,7 +32,7 @@ from . import views
 #                 "dbinfo": {
 #                     "host": "geocore-pgdb",
 #                     "port": "5432",
-#                     "database": "geocoredb",
+#                     "database": "gemapocdb",
 #                     "user": "geocoreuser",
 #                     "password": "mYge0cor3"
 #                 },
@@ -54,7 +54,7 @@ from . import views
 #             "parameters": {
 #                 "host": "geocore-pgdb",
 #                 "port": "5432",
-#                 "dbname": "geocoredb",
+#                 "dbname": "gemapocdb",
 #                 "user": "geocoreuser",
 #                 "password": "mYge0cor3",
 #                 "table": "planet_osm_roads"

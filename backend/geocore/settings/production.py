@@ -12,7 +12,7 @@ CSRF_COOKIE_SECURE = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', 'geocoredb'),
+        'NAME': os.environ.get('DB_NAME', 'gemapocdb'),
         'USER': os.environ.get('DB_USER', 'user'),
         'PASSWORD': os.environ.get('DB_PASSWORD', 'password'),
         'HOST': os.environ.get('DB_HOST', 'localhost'),

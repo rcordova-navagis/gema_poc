@@ -42,7 +42,7 @@ from rest_framework import serializers, viewsets, routers
 #                 "clip": False,
 #                 "dbinfo": {
 #                     "host": "geocore-pgdb",
-#                     "database": "geocoredb",
+#                     "database": "gemapocdb",
 #                     "user": "geocoreuser",
 #                     "password": "mYge0cor3"
 #                 },
@@ -64,7 +64,7 @@ from rest_framework import serializers, viewsets, routers
 #             "parameters": {
 #                 "host": "geocore-pgdb",
 #                 "port": "5444",
-#                 "dbname": "geocoredb",
+#                 "dbname": "gemapocdb",
 #                 "user": "geocoreuser",
 #                 "password": "mYge0cor3",
 #                 "table": "planet_osm_roads"

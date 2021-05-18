@@ -56,7 +56,7 @@ class TilestacheSeeder:
                                 'dbinfo': {
                                     'host':'geocore-pgdb',
                                     'port':'5432',
-                                    'database':'geocoredb',
+                                    'database':'gemapocdb',
                                     'user':'geocoreuser',
                                     'password':'mYge0cor3'
                                  },

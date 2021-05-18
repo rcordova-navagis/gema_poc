@@ -2,7 +2,7 @@ const pg = require('pg');
 const Supercluster = require('supercluster');
 const MongoClient = require('mongodb').MongoClient;
 
-const PG_CONN_STRING = "postgres://geocoreuser:mYge0cor3@geocore-pgdb:5432/geocoredb";
+const PG_CONN_STRING = "postgres://geocoreuser:mYge0cor3@geocore-pgdb:5432/gemapocdb";
 const MONGO_CONN_STRING = "mongodb://root:rootpassword@192.168.10.10:27017";
 
 const PH_BBOX = [101.931152, 1.823423, 144.118652, 21.861499];

@@ -14,7 +14,7 @@ DATABASES = {
     'default': {
         # 'ENGINE': 'django.db.backends.postgresql',
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': os.environ.get('DB_NAME', 'geocoredb'),
+        'NAME': os.environ.get('DB_NAME', 'gemapocdb'),
         'USER': os.environ.get('DB_USER', 'user'),
         'PASSWORD': os.environ.get('DB_PASSWORD', 'password'),
         'HOST': os.environ.get('DB_HOST', 'localhost'),
@@ -69,7 +69,7 @@ tilestache_config = {
                 "kwargs": {
                     "clip": False,
                     "dbinfo": {
-                        "database": "geocoredb",
+                        "database": "gemapocdb",
                         "host": "geocore-pgdb",
                         "password": "mYge0cor3",
                         "user": "geocoreuser"
