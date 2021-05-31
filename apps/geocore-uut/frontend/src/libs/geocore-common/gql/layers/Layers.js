@@ -28,10 +28,9 @@ const layerDatasetsSubscription = gql`
     }
 `;
 
-const getlayerDetailsQuery = (layerId) => {
-    return gql`
-        query {
-            layers(where: {id: {_eq: ${layerId}}}, limit: 1) {
+const getlayerDetailsQuery = gql`
+        query GetLayers($layerId: Int!, $limit: Int!) {
+            layers(where: {id: {_eq: $layerId}}, limit: 1) {
                 id
                 name
                 code
@@ -56,17 +55,16 @@ const getlayerDetailsQuery = (layerId) => {
                         status
                         has_errors
                     }
-                    dataset_data {
+                    dataset_data(limit: $limit) {
                         id
                         row_no
-                        geom
                         data
                     }
                 }
             }
         }
-    `;
-};
+`;
+
 
 const deleteLayerAndDatasets = (layerId, datasetId, datasetQueueId) => {
   return gql`

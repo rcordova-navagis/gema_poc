@@ -9,7 +9,8 @@ import {
     UutListView,
     UutTableView,
     ManageLayerCategoriesDialog,
-    AddLayerDialog
+    AddLayerDialog,
+    UpdateBoundaryLayerDialog,
 } from "./index";
 import {DatasourceDialog} from "../datasource/index";
 
@@ -21,7 +22,11 @@ export default function UutLists(props) {
 
             <ManageLayerCategoriesDialog {...props} />
 
-            <AddLayerDialog {...props} />
+            <UpdateBoundaryLayerDialog {...props} />
+
+            <AddLayerDialog categories={props.categories}
+                            showAddLayerModal={props.showAddLayerModal}
+                            setShowAddLayerModal={props.setShowAddLayerModal} />
 
             <DatasourceDialog showDatasourceDialog={props.showDatasourceDialog}
                               toggleDatasourceDialog={props.toggleDatasourceDialog} />

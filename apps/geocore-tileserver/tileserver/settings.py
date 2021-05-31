@@ -35,7 +35,7 @@ DATABASES = {
         'USER': os.environ.get('DB_USER', 'user'),
         'PASSWORD': os.environ.get('DB_PASSWORD', 'password'),
         'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'PORT': ''
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
 
@@ -82,17 +82,17 @@ REST_FRAMEWORK = {
     ]
 }
 
-if DEBUG:
-    INSTALLED_APPS += [
-        'corsheaders'
-    ]
+# if DEBUG:
+INSTALLED_APPS += [
+    'corsheaders'
+]
 
-    MIDDLEWARE += [
-        'corsheaders.middleware.CorsMiddleware'
-    ]
+MIDDLEWARE += [
+    'corsheaders.middleware.CorsMiddleware'
+]
 
-    CORS_ORIGIN_ALLOW_ALL = True
-    CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 # TILESTACHE_FILE_CONF = os.path.join(BASE_DIR, 'conf', 'tilestache', 'tilestache.cfg')
 # TILESTACHE_DIRPATH = BASE_DIR
@@ -115,13 +115,22 @@ if DEBUG:
 #     "name": "Test",
 #     "verbose": "True"
 # }
+# TILESTACHE_CACHE = {
+#     "name": os.environ.get('TILESTACHE_CACHE_NAME', 'Redis'),
+#     "host": os.environ.get('TILESTACHE_CACHE_HOST', 'geocore-redis'),
+#     "port": os.environ.get('TILESTACHE_CACHE_PORT', '6379'),
+#     "db": os.environ.get('TILESTACHE_CACHE_DB', '0'),
+#     "key prefix": os.environ.get('TILESTACHE_CACHE_KEY_PREFIX', 'geocore')
+# }
+
 TILESTACHE_CACHE = {
-    "name": "Redis",
-    "host": "geocore-redis",
-    "port": 6379,
+    "name": 'Redis',
+    "host": 'geocore-redis',
+    "port": '6379',
     "db": 0,
-    "key prefix": "geocore"
+    "key prefix": 'geocore',
 }
+
 
 ROOT_URLCONF = 'tileserver.urls'
 

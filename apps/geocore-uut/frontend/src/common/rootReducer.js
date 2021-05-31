@@ -10,6 +10,7 @@ import uutReducer from '../features/uut/redux/reducer';
 import datasourceReducer from '../features/datasource/redux/reducer';
 import layerReducer from '../features/layer/redux/reducer';
 import categoryReducer from '../features/category/redux/reducer';
+import boundariesReducer from '../features/boundaries/redux/reducer';
 
 // NOTE 1: DO NOT CHANGE the 'reducerMap' name and the declaration pattern.
 // This is used for Rekit cmds to register new features, remove features, etc.
@@ -26,6 +27,7 @@ const reducerMap = {
   datasource: datasourceReducer,
   layer: layerReducer,
   category: categoryReducer,
+  boundaries: boundariesReducer,
 };
 
 export default combineReducers(reducerMap);

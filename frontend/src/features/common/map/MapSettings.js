@@ -36,14 +36,14 @@ const MapSettingsContent = (props) => {
 
     return (
             <Container zeroMinWidth
-                       className="common-map-map-settings-content">.
+                       className="common-map-map-settings-content">
 
             <Grid container
                   spacing={1}
                   zeroMinWidth>
 
                 <Grid container item>
-                    <h3>Driver</h3>
+                    <h5>Driver</h5>
                 </Grid>
 
                 <Grid container
@@ -122,7 +122,7 @@ export default function MapSettings(props) {
     <div className="common-map-map-settings">
         <Button
             id="geocore-map-settings-btn"
-            className="geocore-btn MuiPaper-elevation1"
+            className="geocore-btn-sm MuiPaper-elevation1"
             startIcon={<SettingsIcon />}
             onClick={handleClick}
         >

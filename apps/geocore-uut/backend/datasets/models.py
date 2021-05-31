@@ -93,3 +93,8 @@ class DatasetData(models.Model):
     data_pk = models.CharField(max_length=100, blank=True, null=True)
     geom = gismodels.GeometryField(srid=4326, blank=True, null=True)
     data = JSONField(blank=True, null=True)
+
+
+# class Upload(models.Model):
+#     upload_file = models.FileField()
+#     upload_date = models.DateTimeField(auto_now_add=True)

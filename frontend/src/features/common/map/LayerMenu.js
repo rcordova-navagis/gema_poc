@@ -5,6 +5,7 @@ import Tree, {TreeNode} from 'rc-tree';
 import {isEmpty} from 'underscore';
 import PlaceIcon from '@material-ui/icons/Place';
 import PermMediaIcon from '@material-ui/icons/PermMedia';
+import {BoundaryHierarchyFilter} from "../../boundaries";
 
 
 const LayerMenuFilter = () => (
@@ -102,7 +103,7 @@ export default class LayerMenu extends Component {
       }
   }
 
-    onExpand(expandedKeys) {
+  onExpand(expandedKeys) {
       console.log('onExpand', expandedKeys);
       // if not set autoExpandParent to false, if children expanded, parent can not collapse.
       // or, you can remove all expanded chilren keys.
@@ -158,7 +159,6 @@ export default class LayerMenu extends Component {
                 return (
                     <TreeNode key={item.key}
                               title={item.name}
-                              icon={isEmpty(item.dataset) ? <PermMediaIcon/> : <PlaceIcon />}
                     >
                         {renderTree(item.children)}
                     </TreeNode>
@@ -196,7 +196,15 @@ export default class LayerMenu extends Component {
                               handleClose={this.handleClose.bind(this)} />
         </Toolbar>
 
-        <Divider />
+      <Divider />
+
+      {
+          this.props.boundaryHierarchy
+          ? <BoundaryHierarchyFilter boundaryHierarchy={this.props.boundaryHierarchy} />
+          : 'Loading Boundaries...'
+      }
+
+      <Divider />
 
         <section className="geocore-map-layer-menu-body">
             {
@@ -204,7 +212,7 @@ export default class LayerMenu extends Component {
                     ? (
                     <Tree
                         checkable
-                        showIcon={true}
+                        showIcon={false}
                         autoExpandParent={true}
                         onExpand={this.onExpand.bind(this)}
                         onCheck={this.onCheck.bind(this)}

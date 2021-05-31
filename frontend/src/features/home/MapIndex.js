@@ -13,9 +13,11 @@ import {useSubscription} from '@apollo/react-hooks/lib/useSubscription';
 import {CategoriesTransformer} from "./../../libs/geocore-common/utils";
 import {useToggleMapLayers} from "../common/redux/hooks";
 import {isEmpty} from 'underscore';
+import {useGetBoundaryHierarchy} from "../boundaries/redux/hooks";
+import LayerResolver from "../common/layers/LayerResolver";
 
 
-const _mapOptions = {zoom: 3};
+const _mapOptions = {zoom: 6};
 // let _layerManager;
 
 const layers = [
@@ -32,15 +34,15 @@ const layers = [
         //     getLineWidth: 1,
         // }),
 
-        new MVTLayer({
-            data: `${CONFIG.TILESTACHE_BASE_URL}/osmpoints/{z}/{x}/{y}.pbf`,
-            pickable: true,
-            filled: true,
-            getFillColor: [200, 0, 0],
-            getRadius: 20,
-            pointRadiusMinPixels: 4,
-            pointRadiusMaxPixels: 4,
-        }),
+        // new MVTLayer({
+        //     data: `${CONFIG.TILESTACHE_BASE_URL}/osmpoints/{z}/{x}/{y}.pbf`,
+        //     pickable: true,
+        //     filled: true,
+        //     getFillColor: [200, 0, 0],
+        //     getRadius: 20,
+        //     pointRadiusMinPixels: 4,
+        //     pointRadiusMaxPixels: 4,
+        // }),
 
         // new MVTLayer({
         //     data: `${CONFIG.TILESTACHE_BASE_URL}/osmpolygons/{z}/{x}/{y}.pbf`,
@@ -66,6 +68,7 @@ function MapIndex (props) {
     const checkedLayers = useSelector(state => state.common.checkedLayers);
     const {setMapViewport} = useSetMapViewport();
     const [tilestacheLayers, setTilestacheLayers] = useState([]);
+    const {getBoundaryHierarchy, getBoundaryHierarchyPending, boundaryHierarchy} = useGetBoundaryHierarchy();
 
     const onClickObject = (info, event) => {
         console.log('on click object: ', info, event);
@@ -83,71 +86,52 @@ function MapIndex (props) {
     const {data: layersData, loading, error} = useSubscription(layersSubscription);
     const {data: categoryData, loading: loadingLayerCategories, error: errorLayerCategories} = useSubscription(layerCategoriesSubscription);
 
-    useEffect(() => {
-        if (layersData && layersData.layers) {
-            setTilestacheLayers(layersData.layers.filter(layer => {
-                return layer.dataset && layer.dataset.django_tilestache_layer;
-            }).map(layer => {
-                return new MVTLayer({
-                    id: layer.id,
-                    data: `${CONFIG.TILESTACHE_BASE_URL}/${layer.dataset.django_tilestache_layer.name}/{z}/{x}/{y}.pbf`,
-                    pickable: false,
-                    filled: true,
-                    getFillColor: [200, 0, 0],
-                    getRadius: 20,
-                    pointRadiusMinPixels: 4,
-                    pointRadiusMaxPixels: 4,
-                    visible: false,
-                });
-            }));
-        }
-    }, [layersData]);
+    // useEffect(() => {
+    //     if (layersData && layersData.layers) {
+    //         setTilestacheLayers(
+    //             layersData.layers.filter(layer => {
+    //                 return layer.dataset && layer.dataset.django_tilestache_layer;
+    //             }).map(layer => LayerResolver.getLayer(layer))
+    //         );
+    //     }
+    // }, [layersData]);
 
     useEffect(() => {
-        if (categoryData && Array.isArray(categoryData.categories) && layersData.layers && Array.isArray(layersData.layers)) {
+        if (categoryData && Array.isArray(categoryData.categories) && layersData && layersData.layers && Array.isArray(layersData.layers)) {
             let hierarchy = CategoriesTransformer.transformLayerHierarchy(layersData.layers, categoryData.categories);
             // let hierarchy = CategoriesTransformer.transformToDropdownTreeSelect(categoryData.categories);
-            console.log('hiearchy: ',hierarchy);
             setLayersHierarchy(hierarchy);
         }
     }, [layersData, categoryData]);
 
     useEffect(() => {
         if (layersData && layersData.layers && checkedLayers) {
-            setTilestacheLayers(layersData.layers.filter(layer => {
-                return layer.dataset && layer.dataset.django_tilestache_layer;
-            }).map(layer => {
-                return new MVTLayer({
-                    id: layer.id,
-                    data: `${CONFIG.TILESTACHE_BASE_URL}/${layer.dataset.django_tilestache_layer.name}/{z}/{x}/{y}.pbf`,
-                    pickable: false,
-                    filled: true,
-                    getFillColor: [200, 0, 0],
-                    getRadius: 20,
-                    pointRadiusMinPixels: 4,
-                    pointRadiusMaxPixels: 4,
-                    visible: checkedLayers.includes(String(layer.id)),
-                });
-            }));
+            setTilestacheLayers(
+                layersData.layers.filter(layer => {
+                    return layer.dataset && layer.dataset.django_tilestache_layer;
+                }).map(layer => LayerResolver.getLayer(layer, checkedLayers.includes(String(layer.id))))
+            );
         }
     }, [checkedLayers, layersData]);
 
 
     useEffect(function() {
-        setTilestacheLayers([
-            new MVTLayer({
-                data: `${CONFIG.TILESTACHE_BASE_URL}/osmpoints/{z}/{x}/{y}.pbf`,
-                pickable: true,
-                filled: true,
-                getFillColor: [200, 0, 0],
-                getRadius: 20,
-                pointRadiusMinPixels: 4,
-                pointRadiusMaxPixels: 4,
-                minZoom: 8,
-                maxZoom: 23,
-                onClick: onClickObject,
-            })
-        ]);
+        // setTilestacheLayers([
+        //     new MVTLayer({
+        //         data: `${CONFIG.TILESTACHE_BASE_URL}/osmpoints/{z}/{x}/{y}.pbf`,
+        //         pickable: true,
+        //         filled: true,
+        //         getFillColor: [200, 0, 0],
+        //         getRadius: 20,
+        //         pointRadiusMinPixels: 4,
+        //         pointRadiusMaxPixels: 4,
+        //         minZoom: 8,
+        //         maxZoom: 23,
+        //         onClick: onClickObject,
+        //     })
+        // ]);
+
+        getBoundaryHierarchy();
 
         return () => {
             if (mapRef && mapRef.current) {
@@ -156,13 +140,16 @@ function MapIndex (props) {
 
             setMapLoaded(false);
         }
-    }, []);
+    }, [getBoundaryHierarchy]);
 
     if (isEmpty(config)) return null;
 
     return (
       <div className="home-map-index">
-        <LayerMenu layersHierarchy={layersHierarchy} toggleMapLayers={toggleMapLayers} />
+
+        <LayerMenu layersHierarchy={layersHierarchy}
+                   boundaryHierarchy={boundaryHierarchy}
+                   toggleMapLayers={toggleMapLayers} />
 
         <MapSettings config={config} />
 
@@ -170,8 +157,7 @@ function MapIndex (props) {
             onMapLoad={handleMapLoad}
             onViewportChange={setMapViewport}
             config={config}
-            mapOptions={_mapOptions}
-        >
+            mapOptions={_mapOptions}>
             <LayerOverlay config={config} layers={tilestacheLayers} ref={mapRef} />
         </GeocoreMap>
       </div>

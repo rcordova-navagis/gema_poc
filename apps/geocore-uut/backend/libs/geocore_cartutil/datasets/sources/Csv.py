@@ -118,7 +118,7 @@ class Csv:
         rows_with_invalid_latlng = []
         # add validation and log rows with issue
         for index, row in df.iterrows():
-            validate_coords = PointHelper.validate_latlng(row[geom_cols['LATITUDE']], row[geom_cols['LONGITUDE']])
+            validate_coords = PointHelper.validate_latlng(row[geom_cols['LATITUDE']], row[geom_cols['LONGITUDE']], index)
             if validate_coords is not True:
                 message = "row={row_no} error({message})".format(row_no=row['row_no'], message=validate_coords)
                 self.logger.info(message)
@@ -152,4 +152,4 @@ class Csv:
         return [
             {'action': 'warm_tilestache', 'params': {'zooms': [1,2], 'table': self.dataset_queue_name, 'dataset_id': self.dataset_id}},
             {'action': 'do_cluster', 'params': {'zooms': [1,2], 'table': self.dataset_queue_name, 'dataset_id': self.dataset_id}}
-        ];
+        ]
