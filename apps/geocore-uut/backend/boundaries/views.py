@@ -114,5 +114,5 @@ class BoundariesView(APIView):
         hierarchy = cache.get(CACHE_BOUNDARY_HIERARCHY)
         if hierarchy is None:
             hierarchy = self.get_boundary_hierarchy()
-            cache.set(CACHE_BOUNDARY_HIERARCHY, hierarchy, timeout=None)
+            cached = cache.set(CACHE_BOUNDARY_HIERARCHY, hierarchy, timeout=None)
         return hierarchy

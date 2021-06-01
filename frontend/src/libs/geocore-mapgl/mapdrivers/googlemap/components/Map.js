@@ -8,6 +8,8 @@ let _center,
     _viewport;
 
 
+// CURRENTLY USED in frontend
+
 function Map (props) {
     console.log('Gmap: ',props);
 

@@ -1,18 +1,18 @@
 import {CONFIG} from "../../../config";
-import {MVTLayer} from '@deck.gl/geo-layers';
+import MyMVTLayer from "./MvtLayer";
 import WirelessLayer from "./WirelessLayer";
 import WiredLayer from "./WiredLayer";
 
 
 export default class LayerResolver {
-    static getLayer(layer, visible=true) {
+    static getLayer(layer, visible=true, onClick=null) {
         if (layer.category.name == 'Wireless') {
-            return new WirelessLayer().getLayer(layer, visible);
+            return new WirelessLayer().getLayer(layer, visible, onClick);
         } else if(layer.category.name == 'Wired') {
-            return new WiredLayer().getLayer(layer, visible);
+            return new WiredLayer().getLayer(layer, visible, onClick);
         }
 
-        return new MVTLayer({
+        return new MyMVTLayer({
             id: layer.id,
             data: `${CONFIG.TILESTACHE_BASE_URL}/${layer.dataset.django_tilestache_layer.name}/{z}/{x}/{y}.pbf`,
             pickable: false,
@@ -22,6 +22,14 @@ export default class LayerResolver {
             pointRadiusMinPixels: 4,
             pointRadiusMaxPixels: 4,
             visible: visible,
+            // onDataLoad: tileJson => {
+            //     console.log('onDataLoad: ',tileJson);
+            // },
+            onClick: item => {
+                console.log('onClick: ',item);
+                // item.object.properties
+                onClick();
+            },
         });
     }
 }

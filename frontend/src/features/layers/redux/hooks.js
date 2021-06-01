@@ -1,0 +1,1 @@
+export { useShowLayerDetails } from './showLayerDetails';

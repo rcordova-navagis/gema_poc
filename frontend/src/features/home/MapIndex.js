@@ -6,8 +6,6 @@ import {GeocoreMap, LayerOverlay} from './../../libs/geocore-mapgl';
 import LayerMenu from '../common/map/LayerMenu';
 import MapSettings from '../common/map/MapSettings';
 import {useSetMapViewport} from '../config/redux/setMapViewport';
-import {MVTLayer} from '@deck.gl/geo-layers';
-import {GeoJsonLayer} from '@deck.gl/layers';
 import {layerCategoriesSubscription, layersSubscription} from './../../libs/geocore-common/gql';
 import {useSubscription} from '@apollo/react-hooks/lib/useSubscription';
 import {CategoriesTransformer} from "./../../libs/geocore-common/utils";
@@ -15,6 +13,8 @@ import {useToggleMapLayers} from "../common/redux/hooks";
 import {isEmpty} from 'underscore';
 import {useGetBoundaryHierarchy} from "../boundaries/redux/hooks";
 import LayerResolver from "../common/layers/LayerResolver";
+import {useShowLayerDetails} from "../layers/redux/hooks";
+import {LayerDetails} from "../layers";
 
 
 const _mapOptions = {zoom: 6};
@@ -69,6 +69,7 @@ function MapIndex (props) {
     const {setMapViewport} = useSetMapViewport();
     const [tilestacheLayers, setTilestacheLayers] = useState([]);
     const {getBoundaryHierarchy, getBoundaryHierarchyPending, boundaryHierarchy} = useGetBoundaryHierarchy();
+    const {showLayerDetails, isLayerDetailsVisible, layerDetailsData} = useShowLayerDetails();
 
     const onClickObject = (info, event) => {
         console.log('on click object: ', info, event);
@@ -109,10 +110,10 @@ function MapIndex (props) {
             setTilestacheLayers(
                 layersData.layers.filter(layer => {
                     return layer.dataset && layer.dataset.django_tilestache_layer;
-                }).map(layer => LayerResolver.getLayer(layer, checkedLayers.includes(String(layer.id))))
+                }).map(layer => LayerResolver.getLayer(layer, checkedLayers.includes(String(layer.id)), showLayerDetails))
             );
         }
-    }, [checkedLayers, layersData]);
+    }, [showLayerDetails, checkedLayers, layersData]);
 
 
     useEffect(function() {
@@ -146,12 +147,15 @@ function MapIndex (props) {
 
     return (
       <div className="home-map-index">
-
         <LayerMenu layersHierarchy={layersHierarchy}
                    boundaryHierarchy={boundaryHierarchy}
                    toggleMapLayers={toggleMapLayers} />
 
         <MapSettings config={config} />
+
+        {
+            isLayerDetailsVisible && <LayerDetails layerDetailsData={layerDetailsData} />
+        }
 
         <GeocoreMap
             onMapLoad={handleMapLoad}

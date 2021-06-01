@@ -7,6 +7,7 @@ import commonReducer from '../features/common/redux/reducer';
 import authenticationReducer from '../features/authentication/redux/reducer';
 import boundariesReducer from '../features/boundaries/redux/reducer';
 import filtersReducer from '../features/filters/redux/reducer';
+import layersReducer from '../features/layers/redux/reducer';
 
 // NOTE 1: DO NOT CHANGE the 'reducerMap' name and the declaration pattern.
 // This is used for Rekit cmds to register new features, remove features, etc.
@@ -21,6 +22,7 @@ const reducerMap = {
   authentication: authenticationReducer,
   boundaries: boundariesReducer,
   filters: filtersReducer,
+  layers: layersReducer,
 };
 
 export default combineReducers(reducerMap);
