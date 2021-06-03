@@ -6,7 +6,6 @@ const translateMapOptions = (mapOptions) => {
     let _translatedOptions = {};
 };
 
-
 export default (mapOptions) => {
     return compose(
         withProps({
@@ -35,7 +34,7 @@ export default (mapOptions) => {
                 mapTypeControl: false,
                 streetViewControl: false,
                 controlSize: 34,
-                clickableIcons: false
+                clickableIcons: false,
             }}
             ref={props.onMapMounted}
         >

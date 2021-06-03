@@ -16,4 +16,4 @@ class ProcessDataset:
 
         dataset_driver_obj = dataset_class(self.dataset_id, self.dataset_queue_id, self.dataset_queue_name, self.sourcefilepath, self.DB_DICT, self.logfile)
 
-        dataset_driver_obj.ingest()
+        return dataset_driver_obj.ingest()

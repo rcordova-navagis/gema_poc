@@ -119,6 +119,17 @@ export default function UutListToolbar(props) {
 
             <Button
                 color="primary"
+                variant="contained"
+                size="small"
+                onClick={() => {
+                    props.setShowUpdateBoundaryLayerModal(true);
+                }}
+                className="uut-toolbar-primary-btn">
+                Update Boundary Layer
+            </Button>
+
+            <Button
+                variant="contained"
                 size="small"
                 onClick={() => {
                     props.setShowAddLayerModal(true);

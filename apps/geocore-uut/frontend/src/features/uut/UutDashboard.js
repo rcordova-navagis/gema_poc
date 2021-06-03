@@ -33,17 +33,18 @@ import {useToggleDatasourceDialog} from "../datasource/redux/hooks";
 export default function UutDashboard(props) {
   const [isListMaximize, setIsListMaximize] = useState(true);
   const [showAddLayerModal, setShowAddLayerModal] = useState(false);
+  const [showUpdateBoundaryLayerModal, setShowUpdateBoundaryLayerModal] = useState(false);
   const [showCategoriesModal, setShowCategoriesModal] = useState(false);
   const [categories, setCategories] = useState([]);
   const [layerQueues, setLayerQueues] = useState([]);
   const saveLayerSuccess = useSelector(state => state.uut.saveLayerSuccess);
   const layerIdDetailsToShow = useSelector(state => state.uut.layerIdDetailsToShow);
   const showDatasourceDialog = useSelector(state => state.datasource.showDatasourceDialog);
-  const {showLayerDetails} = useShowLayerDetails();
+  const showLayerDetails = (layerId) => { props.history.push(`/uut/${layerId}`) };
   const {deleteLayer} = useDeleteLayer();
   const {toggleDatasourceDialog} = useToggleDatasourceDialog();
 
-  const {getUutLayers} = useGetUutLayers();
+  // const {getUutLayers} = useGetUutLayers();
   const {data: layerQueueData, loading, error} = useSubscription(layerDatasetsSubscription);
   const {data: categoryData, loading: loadingLayerCategories, error: errorLayerCategories} = useSubscription(layerCategoriesSubscription);
 
@@ -53,9 +54,9 @@ export default function UutDashboard(props) {
       }
   }, [saveLayerSuccess]);
 
-  useEffect(() => {
-        getUutLayers();
-  }, [getUutLayers]);
+  // useEffect(() => {
+  //       getUutLayers();
+  // }, [getUutLayers]);
 
   useEffect(() => {
       if (layerQueueData && layerQueueData.layers) {
@@ -88,6 +89,8 @@ export default function UutDashboard(props) {
                     setIsListMaximize={setIsListMaximize}
                     isListMaximize={isListMaximize}
                     setShowAddLayerModal={setShowAddLayerModal}
+                    setShowUpdateBoundaryLayerModal={setShowUpdateBoundaryLayerModal}
+                    showUpdateBoundaryLayerModal={showUpdateBoundaryLayerModal}
                     showAddLayerModal={showAddLayerModal}
                     setShowCategoriesModal={setShowCategoriesModal}
                     showCategoriesModal={showCategoriesModal}

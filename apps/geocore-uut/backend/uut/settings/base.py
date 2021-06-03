@@ -20,8 +20,7 @@ for directory in (LOG_DIR):
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(' ')
 
 ADMINS = (
-    ('John Doe', 'John.Doe@example.com'),
-    ('Jane Doe', 'Jane.Doe@example.com'),
+    ('Wayne Abarquez', 'wayne.abarquez@navagis.com'),
 )
 
 # Password validation
@@ -55,7 +54,8 @@ INSTALLED_APPS = [
     # apps
     'layers',
     'datasets',
-    'clusters'
+    'clusters',
+    'boundaries'
 ]
 
 LOGGING = {
@@ -190,14 +190,39 @@ BROKER_URL = 'amqp://{user}:{password}@{hostname}/{vhost}/'.format(
 CELERY_RESULT_BACKEND = 'rpc://'
 CELERY_TIMEZONE = TIME_ZONE
 
+CACHE_DRIVER = os.environ.get('CACHE_DRIVER', 'redis')
+CACHE_HOST = os.environ.get('CACHE_HOST', 'geocore-redis')
+CACHE_PORT = os.environ.get('CACHE_PORT', '6379')
+CACHE_DB = os.environ.get('CACHE_DB', '1')
+CACHE_LOCATION = "{}://{}:{}/{}".format(CACHE_DRIVER, CACHE_HOST, CACHE_PORT, CACHE_DB)
+CACHE_TTL=60*60*6000
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": CACHE_LOCATION,
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+        "KEY_PREFIX": os.environ.get('CACHE_KEY_PREFIX', 'geocore')
+    }
+}
+
+TILESTACHE_CACHE = {
+    "dirs": "portable",
+    "name": "disk",
+    "gzip": ["txt", "text", "json", "xml", "pbf", "mvt", "geojson"],
+    "path": os.environ.get('TILESTACHE_CACHE_PATH', '/home/navagis/geocore_bucket/tiles'),
+    "umask": "000"
+}
 # TILESTACHE_CACHE = {
 #     "name": "Test",
 #     "verbose": "True"
 # }
-TILESTACHE_CACHE = {
-    "name": "Redis",
-    "host": "geocore-redis",
-    "port": 6379,
-    "db": 0,
-    "key prefix": "geocore"
-}
+# TILESTACHE_CACHE = {
+#     "name": os.environ.get('TILESTACHE_CACHE_NAME', 'Redis'),
+#     "host": os.environ.get('TILESTACHE_CACHE_HOST', 'geocore-redis'),
+#     "port": os.environ.get('TILESTACHE_CACHE_PORT', 6379),
+#     "db": os.environ.get('TILESTACHE_CACHE_DB', 0),
+#     "key prefix": os.environ.get('TILESTACHE_CACHE_KEY_PREFIX', 'geocore')
+# }

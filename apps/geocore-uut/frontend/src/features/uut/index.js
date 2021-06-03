@@ -13,3 +13,5 @@ export { default as LayerCategoryTree } from './LayerCategoryTree';
 export { default as LayerCategoryForm } from './LayerCategoryForm';
 export { default as DatasetTable } from './DatasetTable';
 export { default as DatasetMap } from './DatasetMap';
+export { default as UutLayerDetailsPage } from './UutLayerDetailsPage';
+export { default as UpdateBoundaryLayerDialog } from './UpdateBoundaryLayerDialog';

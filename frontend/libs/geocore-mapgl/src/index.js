@@ -1,1 +1,1 @@
-export GoogleMap from './components/drivers/GoogleMap/GoogleMap';
+export GoogleMap from './Components/drivers/GoogleMap/GoogleMap';

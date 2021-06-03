@@ -13,7 +13,8 @@
   left: 15px;
   bottom: 15px;
   z-index: 102;
-  max-width: 280px;
+  min-width: 380px;
+  max-width: 380px;
   min-height: 10%;
   max-height: 40%;
   overflow: auto;

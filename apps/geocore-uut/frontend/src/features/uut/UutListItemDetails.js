@@ -25,40 +25,8 @@ function TabPanel(props) {
 }
 
 
-const excludedColumns = ['geom', 'geometry','field_1','ogc_fid'];
-
-
 export default function UutListItemDetails(props) {
   const [currentTab, setCurrentTab] = useState(0);
-  const [dataset, setDataset] = useState({dataset_queue: {}, columns: [], rows: []});
-  const {data, loading, error} = useQuery(getlayerDetailsQuery(props.layerIdDetailsToShow));
-
-  console.log('UutListItemDetails data: ',data);
-
-  useEffect(() => {
-      if (data && Array.isArray(data.layers) && data.layers.length) {
-          let layer = data.layers[0],
-              columns = [],
-              rows = [],
-              dq = {};
-
-          if (layer.dataset && Array.isArray(layer.dataset.dataset_data) && layer.dataset.dataset_data.length) {
-              for (let k in layer.dataset.dataset_data[0].data) {
-                  if (!excludedColumns.includes(k)) columns.push(k);
-              }
-
-              rows = layer.dataset.dataset_data.map(item => {
-                return Object.assign({}, item.data, item.geom);
-              });
-          }
-
-          if (layer.dataset && layer.dataset.dataset_queue) {
-              dq = layer.dataset.dataset_queue;
-          }
-
-          setDataset({rows: rows, columns: columns, dataset_queue: dq})
-      }
-  }, [data]);
 
   return (
     <Paper elevation={1}
@@ -77,14 +45,14 @@ export default function UutListItemDetails(props) {
         {/*    </Toolbar>*/}
         {/*</AppBar>*/}
 
-        <Container>
+        <Container disableGutters={true} maxWidth="xl">
             <AppBar position="static" color="default">
                 <Tabs value={currentTab}
                       textColor="primary"
                       indicatorColor="primary"
                       onChange={(e, val) => {
                           console.log('on change tab: ',e,val,currentTab);
-                        setCurrentTab(val);
+                          setCurrentTab(val);
                       }}
                 >
                     <Tab label="Table View" id="uut-details-tab-0" />
@@ -92,10 +60,10 @@ export default function UutListItemDetails(props) {
                 </Tabs>
             </AppBar>
             <TabPanel value={currentTab} index={0}>
-                <DatasetTable dataset={dataset} />
+                <DatasetTable dataset={props.dataset} />
             </TabPanel>
             <TabPanel value={currentTab} index={1}>
-                <DatasetMap dataset={dataset} />
+                <DatasetMap dataset={props.dataset} />
             </TabPanel>
             {/*<div role="tabpanel" id="dataset-tabpanel-0" hidden={currentTab !== 0} className="uut-uut-list-item-details-flex-content">*/}
             {/*    <DatasetTable />*/}

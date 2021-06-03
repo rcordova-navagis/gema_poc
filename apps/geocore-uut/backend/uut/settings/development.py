@@ -51,34 +51,34 @@ CORS_ALLOW_CREDENTIALS = True
 #     'http://localhost:3030',
 # ]
 
-tilestache_config = {
-    "cache": {
-        "name": "Disk",
-        "dirs": "portable",
-        "gzip": [
-            "xml"
-        ],
-        "path": "/tmp/stache",
-        "umask": "0000"
-    },
-    "layers": {
-        "osm_roads": {
-            "allowed origin": "*",
-            "provider": {
-                "class": "TileStache.Goodies.VecTiles:Provider",
-                "kwargs": {
-                    "clip": False,
-                    "dbinfo": {
-                        "database": "gemapocdb",
-                        "host": "geocore-pgdb",
-                        "password": "mYge0cor3",
-                        "user": "geocoreuser"
-                    },
-                    "queries": [
-                        "SELECT ST_Transform(way, 900913) AS __geometry__, osm_id as geomId, name as roadName FROM planet_osm_roads"
-                    ]
-                }
-            }
-        }
-    }
-}
+# tilestache_config = {
+#     "cache": {
+#         "name": "Disk",
+#         "dirs": "portable",
+#         "gzip": [
+#             "xml"
+#         ],
+#         "path": "/tmp/stache",
+#         "umask": "0000"
+#     },
+#     "layers": {
+#         "osm_roads": {
+#             "allowed origin": "*",
+#             "provider": {
+#                 "class": "TileStache.Goodies.VecTiles:Provider",
+#                 "kwargs": {
+#                     "clip": False,
+#                     "dbinfo": {
+#                         "database": "gemapocdb",
+#                         "host": "geocore-pgdb",
+#                         "password": "mYge0cor3",
+#                         "user": "geocoreuser"
+#                     },
+#                     "queries": [
+#                         "SELECT ST_Transform(way, 900913) AS __geometry__, osm_id as geomId, name as roadName FROM planet_osm_roads"
+#                     ]
+#                 }
+#             }
+#         }
+#     }
+# }

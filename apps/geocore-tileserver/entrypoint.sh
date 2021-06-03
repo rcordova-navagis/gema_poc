@@ -5,7 +5,7 @@ if [ "$DATABASE" = "postgres" ]
 then
     echo "Waiting for postgres..."
 
-    DATABASE_URL=postgres://$DB_USER:$DB_PASSWORD@$DB_HOST/$DB_NAME
+    DATABASE_URL=postgres://$DB_USER:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME
 
     until psql $DATABASE_URL -c '\l'; do
         echo "TRYING TO CONNECT TO $DATABASE_URL"

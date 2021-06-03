@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {DropzoneArea} from 'material-ui-dropzone';
 import {
     UUT_FILE_DROPZONE_TEXT,
@@ -16,6 +16,7 @@ export default function LayerFileUpload(props) {
                 // acceptedFiles={UUT_ACCEPTED_FILETYPES}
                 // acceptedFiles={["*/*"]}
                 filesLimit={1}
+                maxFileSize={1048576000}
                 dropzoneClass="geocore-file-dropzone"
                 showFileNamesInPreview={true}
                 useChipsForPreview={true}

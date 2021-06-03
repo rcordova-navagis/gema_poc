@@ -5,12 +5,19 @@ const UUT_BASE_URL = `${CONFIG.UUT_PROTOCOL}://${CONFIG.UUT_BASE_URL}:${CONFIG.U
 
 const UUT_LAYERS_URL = `${UUT_BASE_URL}/layers`;
 
+const UUT_BOUNDARIES_URL = `${UUT_BASE_URL}/boundaries`;
+
 
 export default class ApiService {
 
+    /*
+    * LAYERS
+    *
+    * */
+
     static getUutLayers() {
         return new Promise((resolve, reject) => {
-            axios.post(UUT_LAYERS_URL)
+            axios.get(UUT_LAYERS_URL)
                 .then(
                     res => {
                         resolve(res.data);
@@ -39,6 +46,25 @@ export default class ApiService {
     static saveLayer(data) {
         return new Promise((resolve, reject) => {
             axios.post(UUT_LAYERS_URL, data)
+                .then(
+                    res => {
+                        resolve(res.data);
+                    },
+                    error => {
+                        reject(error);
+                    }
+                );
+        });
+    }
+
+    /*
+    * BOUNDARIES
+    *
+    * */
+
+    static updateBoundaryLayer(data) {
+        return new Promise((resolve, reject) => {
+            axios.post(UUT_BOUNDARIES_URL, data)
                 .then(
                     res => {
                         resolve(res.data);

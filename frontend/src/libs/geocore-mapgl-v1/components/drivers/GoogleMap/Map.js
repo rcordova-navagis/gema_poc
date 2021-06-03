@@ -1,8 +1,6 @@
 /*global google*/
-
 import React, {Component, useState, useCallback} from 'react';
 import {GoogleMap, useLoadScript} from '@react-google-maps/api';
-
 
 let _center,
     _viewport;
@@ -33,7 +31,7 @@ function Map (props) {
         mapTypeControl: false,
         streetViewControl: false,
         controlSize: 34,
-
+        styles: styles,
         // center: {lat: viewport.latitude, lng: viewport.longitude},
         // zoom: viewport.zoom,
     };
@@ -59,12 +57,9 @@ function Map (props) {
             <GoogleMap
                 id="geocore-gmap"
                 mapContainerStyle={{height: `100%`}}
-
                 center={{lat: props.config.mapViewport.latitude, lng: props.config.mapViewport.longitude}}
                 zoom={props.config.mapViewport.zoom}
-
                 options={_options}
-
                 clickableIcons={false}
                 onLoad={_onLoad}
                 onIdle={boundsChangedThrottled}

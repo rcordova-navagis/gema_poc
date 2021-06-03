@@ -26,7 +26,8 @@ urlpatterns = [
 
     url(UUT_API_PREFIX, include([
         path('layers', include('layers.urls', namespace='layers')),
-        path('datasets', include('datasets.urls', namespace='datasets'))
+        path('datasets', include('datasets.urls', namespace='datasets')),
+        path('boundaries', include('boundaries.urls', namespace='boundaries'))
     ]))
 ]
 

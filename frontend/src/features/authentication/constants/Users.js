@@ -6,11 +6,19 @@ const USER_ROLES = {
 
 const DRIVER_MENU_ITEMS = [
     {
-        name: 'HOME',
+        name: 'Facility Map',
         url: '/',
-        icon: 'home',
+        icon: 'place',
         action: () => {
             console.log('go home');
+        }
+    },
+    {
+        name: 'Serviceability',
+        url: '/serviceability',
+        icon: 'network_check',
+        action: () => {
+
         }
     },
     {

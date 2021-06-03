@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   CONFIG_SET_MAP_VIEWPORT,
 } from './constants';
@@ -14,8 +14,9 @@ export function setMapViewport(viewport) {
 
 export function useSetMapViewport() {
   const dispatch = useDispatch();
+  const mapViewport = useSelector(state => state.config.mapViewport);
   const boundAction = useCallback((viewport) => dispatch(setMapViewport(viewport)), [dispatch]);
-  return { setMapViewport: boundAction };
+  return { setMapViewport: boundAction, mapViewport };
 }
 
 export function reducer(state, action) {

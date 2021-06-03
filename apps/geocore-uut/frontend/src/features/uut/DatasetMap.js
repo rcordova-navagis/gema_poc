@@ -4,6 +4,7 @@ import {CONFIG} from './../../config';
 import {useSelector} from 'react-redux';
 import {useSetMapViewport} from '../config/redux/setMapViewport';
 import {MVTLayer} from '@deck.gl/geo-layers';
+import {isEmpty} from 'underscore';
 
 const _mapOptions = {};
 
@@ -26,21 +27,23 @@ export default function DatasetMap(props) {
     }, []);
 
     useEffect(() => {
-        if (props.dataset.dataset_queue) {
+        if (!isEmpty(props.dataset) && !isEmpty(props.dataset.dataset_queue)) {
             setTilestacheLayers([
                 new MVTLayer({
                     data: `${CONFIG.TILESTACHE_BASE_URL}/${props.dataset.dataset_queue.name}/{z}/{x}/{y}.pbf`,
-                    pickable: false,
+                    pickable: true,
                     filled: true,
-                    getFillColor: [200, 0, 0],
-                    getRadius: 20,
-                    pointRadiusMinPixels: 4,
-                    pointRadiusMaxPixels: 4
+                    stroked: true,
+                    extruded: false,
+                    getFillColor: [200, 0, 0, 200],
+                    getLineWidth: 1,
+                    getRadius: 4,
+                    pointRadiusMinPixels: 3,
+                    pointRadiusMaxPixels: 3,
                 })
             ]);
         }
     }, [props.dataset]);
-
 
     useEffect(function() {
         return function cleanup() {

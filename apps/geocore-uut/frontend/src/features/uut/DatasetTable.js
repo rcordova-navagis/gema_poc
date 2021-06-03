@@ -11,6 +11,7 @@ import {
     IconButton
 } from '@material-ui/core';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import {isEmpty} from 'underscore';
 
 
 export default function DatasetTable(props) {
@@ -25,6 +26,8 @@ export default function DatasetTable(props) {
       setRowsPerPage(parseInt(event.target.value, 10));
       setPage(0);
   };
+
+  if (isEmpty(props.dataset)) return null;
 
   return (
     <div className="uut-dataset-table">

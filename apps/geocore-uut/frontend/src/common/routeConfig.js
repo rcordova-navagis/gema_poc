@@ -8,6 +8,7 @@ import uutRoute from '../features/uut/route';
 import datasourceRoute from '../features/datasource/route';
 import layerRoute from '../features/layer/route';
 import categoryRoute from '../features/category/route';
+import boundariesRoute from '../features/boundaries/route';
 
 
 // NOTE: DO NOT CHANGE the 'childRoutes' name and the declaration pattern.
@@ -20,6 +21,7 @@ const childRoutes = [
   datasourceRoute,
   layerRoute,
   categoryRoute,
+  boundariesRoute,
 ];
 
 
