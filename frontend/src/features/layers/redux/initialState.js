@@ -8,6 +8,7 @@
 const initialState = {
     isLayerDetailsVisible: false,
     layerDetailsData: null,
+    isLayerTableVisible: false,
 };
 
 export default initialState;

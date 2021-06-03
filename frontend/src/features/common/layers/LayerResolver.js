@@ -28,7 +28,7 @@ export default class LayerResolver {
             onClick: item => {
                 console.log('onClick: ',item);
                 // item.object.properties
-                onClick();
+                // onClick();
             },
         });
     }

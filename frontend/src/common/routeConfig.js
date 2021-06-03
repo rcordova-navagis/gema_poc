@@ -7,6 +7,7 @@ import authenticationRoute from '../features/authentication/route';
 import boundariesRoute from '../features/boundaries/route';
 import filtersRoute from '../features/filters/route';
 import layersRoute from '../features/layers/route';
+import serviceabilityRoute from '../features/serviceability/route';
 
 
 // NOTE: DO NOT CHANGE the 'childRoutes' name and the declaration pattern.
@@ -18,6 +19,7 @@ const childRoutes = [
   boundariesRoute,
   filtersRoute,
   layersRoute,
+  serviceabilityRoute,
 ];
 
 

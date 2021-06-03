@@ -36,6 +36,7 @@ export class MyNavDrawer extends Component {
           <List>
               {menuItems.map(item => (
                   <ListItem button
+                            component="a"
                             href={item.url}
                             key={item.name}>
                     <ListItemIcon><Icon>{item.icon}</Icon></ListItemIcon>

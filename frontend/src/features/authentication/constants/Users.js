@@ -18,6 +18,7 @@ const DRIVER_MENU_ITEMS = [
         url: '/serviceability',
         icon: 'network_check',
         action: () => {
+
         }
     },
     {

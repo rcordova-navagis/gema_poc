@@ -8,9 +8,11 @@
 
 import initialState from './initialState';
 import { reducer as showLayerDetailsReducer } from './showLayerDetails';
+import { reducer as toggleLayerTableVisibilityReducer } from './toggleLayerTableVisibility';
 
 const reducers = [
   showLayerDetailsReducer,
+  toggleLayerTableVisibilityReducer,
 ];
 
 export default function reducer(state = initialState, action) {

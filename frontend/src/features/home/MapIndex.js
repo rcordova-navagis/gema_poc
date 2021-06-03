@@ -13,8 +13,8 @@ import {useToggleMapLayers} from "../common/redux/hooks";
 import {isEmpty} from 'underscore';
 import {useGetBoundaryHierarchy} from "../boundaries/redux/hooks";
 import LayerResolver from "../common/layers/LayerResolver";
-import {useShowLayerDetails} from "../layers/redux/hooks";
-import {LayerDetails} from "../layers";
+import {useShowLayerDetails, useToggleLayerTableVisibility} from "../layers/redux/hooks";
+import {LayerDatatable, LayerDetails} from "../layers";
 
 
 const _mapOptions = {zoom: 6};
@@ -70,6 +70,7 @@ function MapIndex (props) {
     const [tilestacheLayers, setTilestacheLayers] = useState([]);
     const {getBoundaryHierarchy, getBoundaryHierarchyPending, boundaryHierarchy} = useGetBoundaryHierarchy();
     const {showLayerDetails, isLayerDetailsVisible, layerDetailsData} = useShowLayerDetails();
+    const {toggleLayerTableVisibility, isLayerTableVisible} = useToggleLayerTableVisibility();
 
     const onClickObject = (info, event) => {
         console.log('on click object: ', info, event);
@@ -149,9 +150,14 @@ function MapIndex (props) {
       <div className="home-map-index">
         <LayerMenu layersHierarchy={layersHierarchy}
                    boundaryHierarchy={boundaryHierarchy}
-                   toggleMapLayers={toggleMapLayers} />
+                   toggleMapLayers={toggleMapLayers}
+                   toggleLayerTableVisibility={toggleLayerTableVisibility}
+                   mapLoaded={mapLoaded} />
 
         <MapSettings config={config} />
+
+        <LayerDatatable isLayerTableVisible={isLayerTableVisible}
+                        toggleLayerTableVisibility={toggleLayerTableVisibility} />
 
         {
             isLayerDetailsVisible && <LayerDetails layerDetailsData={layerDetailsData} />

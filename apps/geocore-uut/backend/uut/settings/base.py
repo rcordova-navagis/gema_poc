@@ -195,6 +195,7 @@ CACHE_HOST = os.environ.get('CACHE_HOST', 'geocore-redis')
 CACHE_PORT = os.environ.get('CACHE_PORT', '6379')
 CACHE_DB = os.environ.get('CACHE_DB', '1')
 CACHE_LOCATION = "{}://{}:{}/{}".format(CACHE_DRIVER, CACHE_HOST, CACHE_PORT, CACHE_DB)
+CACHE_TTL=60*60*6000
 
 CACHES = {
     "default": {
@@ -207,14 +208,21 @@ CACHES = {
     }
 }
 
+TILESTACHE_CACHE = {
+    "dirs": "portable",
+    "name": "disk",
+    "gzip": ["txt", "text", "json", "xml", "pbf", "mvt", "geojson"],
+    "path": os.environ.get('TILESTACHE_CACHE_PATH', '/home/navagis/geocore_bucket/tiles'),
+    "umask": "000"
+}
 # TILESTACHE_CACHE = {
 #     "name": "Test",
 #     "verbose": "True"
 # }
-TILESTACHE_CACHE = {
-    "name": os.environ.get('TILESTACHE_CACHE_NAME', 'Redis'),
-    "host": os.environ.get('TILESTACHE_CACHE_HOST', 'geocore-redis'),
-    "port": os.environ.get('TILESTACHE_CACHE_PORT', 6379),
-    "db": os.environ.get('TILESTACHE_CACHE_DB', 0),
-    "key prefix": os.environ.get('TILESTACHE_CACHE_KEY_PREFIX', 'geocore')
-}
+# TILESTACHE_CACHE = {
+#     "name": os.environ.get('TILESTACHE_CACHE_NAME', 'Redis'),
+#     "host": os.environ.get('TILESTACHE_CACHE_HOST', 'geocore-redis'),
+#     "port": os.environ.get('TILESTACHE_CACHE_PORT', 6379),
+#     "db": os.environ.get('TILESTACHE_CACHE_DB', 0),
+#     "key prefix": os.environ.get('TILESTACHE_CACHE_KEY_PREFIX', 'geocore')
+# }

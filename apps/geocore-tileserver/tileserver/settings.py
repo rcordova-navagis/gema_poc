@@ -96,13 +96,13 @@ CORS_ALLOW_CREDENTIALS = True
 
 # TILESTACHE_FILE_CONF = os.path.join(BASE_DIR, 'conf', 'tilestache', 'tilestache.cfg')
 # TILESTACHE_DIRPATH = BASE_DIR
-TILESTACHE_CACHE = {
-    "dirs": "portable",
-    "name": "disk",
-    "gzip": ["txt", "text", "json", "xml", "pbf", "mvt", "geojson"],
-    "path": os.environ.get('TILESTACHE_CACHE_PATH', '/home/navagis/geocore_bucket/tiles'),
-    "umask": "0000"
-}
+# TILESTACHE_CACHE = {
+#     "dirs": "portable",
+#     "name": "disk",
+#     "gzip": ["txt", "text", "json", "xml", "pbf", "mvt", "geojson"],
+#     "path": os.environ.get('TILESTACHE_CACHE_PATH', '/home/navagis/geocore_bucket/tiles'),
+#     "umask": "0000"
+# }
 # TILESTACHE_CACHE = {
 #     "class": "TileStache.Goodies.Caches.GoogleCloud:Cache",
 #     "kwargs": {
@@ -111,6 +111,16 @@ TILESTACHE_CACHE = {
 #         "secret": "nP4ai27ZSBaooiUqDvfRnNCLo6VBQMtLg5xYbzXS"
 #     }
 # }
+TILESTACHE_CACHE = {
+    "class": "tileserver.GoogleCloudStorageCache:Cache",
+    "kwargs": {
+        "bucket": "geocore-initiative",
+        "access": "GOOGZVWUFK55FKBYGZJU3NI5",
+        "secret": "nP4ai27ZSBaooiUqDvfRnNCLo6VBQMtLg5xYbzXS",
+        "basedir": "tiles/",
+    }
+}
+# print(TILESTACHE_CACHE)
 # TILESTACHE_CACHE = {
 #     "name": "Test",
 #     "verbose": "True"
@@ -122,7 +132,6 @@ TILESTACHE_CACHE = {
 #     "db": os.environ.get('TILESTACHE_CACHE_DB', '0'),
 #     "key prefix": os.environ.get('TILESTACHE_CACHE_KEY_PREFIX', 'geocore')
 # }
-
 # TILESTACHE_CACHE = {
 #     "name": 'Redis',
 #     "host": 'geocore-redis',
